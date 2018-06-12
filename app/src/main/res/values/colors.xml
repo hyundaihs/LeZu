@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#C29C64</color>
+    <color name="colorPrimaryDark">#C4944D</color>
+    <color name="colorAccent">#C29C64</color>
+    <color name="right_top_solid">#b3894e</color>
+    <color name="right_top_background">#be985e</color>
+    <color name="faquan_text_bg">#D4D4D4</color>
+    <color name="faquan_text_color">#EF5E07</color>
+    <color name="ewm_bg">#E9D9C0</color>
+    <color name="homepage_btn1">#8A6EE9</color>
+    <color name="homepage_btn2">#4ED964</color>
+    <color name="homepage_btn3">#EFAD4D</color>
+    <color name="quan_bg">#E6AC58</color>
+    <color name="gray_bg">#f0f0f0</color>
+    <color name="green_bg">#8ddc60</color>
+    <color name="red_text">#ff6460</color>
+    <color name="blue_bg">#62cdfb</color>
+    <color name="blue_bg_dark">#62cef5</color>
+    <color name="gray_dark">#929292</color>
+    <color name="gray_dark_drak">#727272</color>
+    <color name="red">#fc0000</color>
+    <color name="red_dark">#e80000</color>
+
+</resources>

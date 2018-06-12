@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/location_beizhu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="备注信息"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/location_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="点击签到按钮定位"
+            android:inputType="text"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/location_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="签到" />
+    </LinearLayout>
+</LinearLayout>

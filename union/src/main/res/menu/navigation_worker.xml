@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_mission"
+        android:icon="@drawable/lottery"
+        android:title="@string/mission" />
+
+    <item
+        android:id="@+id/navigation_performance"
+        android:icon="@drawable/mine"
+        android:title="@string/performance" />
+
+    <item
+        android:id="@+id/worker_faquan"
+        android:icon="@drawable/faquan"
+        android:title="发券中心" />
+</menu>

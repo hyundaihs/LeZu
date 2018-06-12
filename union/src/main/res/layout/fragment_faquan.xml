@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="优惠券"
+        android:background="@color/faquan_text_bg"
+        android:textColor="@color/faquan_text_color"
+        android:textSize="16sp" />
+
+    <ListView
+        android:id="@+id/fragment_faquan_youhui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="免押额度券"
+        android:background="@color/faquan_text_bg"
+        android:textColor="@color/faquan_text_color"
+        android:textSize="16sp" />
+
+    <ListView
+        android:id="@+id/fragment_faquan_diyong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

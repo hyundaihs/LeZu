@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cyf.union">
+
+    <application
+        android:name=".AppUnion"
+        android:allowBackup="false"
+        android:icon="@mipmap/app_icon"
+        android:label="@string/union"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".activities.HomeActivity" />
+        <activity android:name=".activities.FaQuanLogActivity" />
+        <activity android:name=".activities.FaQuanActivity" />
+        <activity android:name=".activities.WorkerCheckActivity" />
+        <activity android:name=".activities.WorkerGradeActivity" />
+        <activity android:name=".activities.OrderDetailsActivity" />
+        <activity android:name=".activities.TiXianActivity" />
+        <activity android:name=".activities.LocationActivity" />
+        <activity android:name=".wxapi.WXEntryActivity"
+            android:exported="true"/>
+        <activity android:name=".activities.ForgetPsdActivity" />
+        <activity android:name=".activities.RegisteActivity" />
+        <activity android:name=".activities.WebActivity" />
+        <activity android:name=".activities.GradeActivity"/>
+        <activity android:name=".activities.RealPayLogActivity"/>
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ifF1PMultr1GqdplNzcv0ogmSe4v9IVf" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+    </application>
+
+</manifest>

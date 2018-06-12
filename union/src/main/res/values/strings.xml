@@ -1,0 +1,23 @@
+<resources>
+    <string name="union">乐租联盟商</string>
+    <string name="login">登录</string>
+    <string name="start_work">开始工作</string>
+    <string name="news_info">最新资讯</string>
+    <string name="introduce">平台介绍</string>
+    <string name="helpInfo">账号注册</string>
+    <string name="forgetPsd">忘记密码</string>
+    <string name="workerSignIn">员工登录</string>
+    <string name="bossSignIn">Boss登录</string>
+    <string name="psdHit">密码:</string>
+    <string name="accountHit">账号:</string>
+    <string name="performance">绩效</string>
+    <string name="mission">任务</string>
+
+    <string-array name="weeks">
+        <item>第一周</item>
+        <item>第二周</item>
+        <item>第三周</item>
+        <item>第四周</item>
+    </string-array>
+
+</resources>
