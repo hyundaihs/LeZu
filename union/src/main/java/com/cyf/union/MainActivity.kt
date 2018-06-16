@@ -2,46 +2,91 @@ package com.cyf.union
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import com.cyf.lezu.D
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.entity.SystemInfoRes
 import com.cyf.lezu.requestPermission
 import com.cyf.lezu.requests.MySimpleRequest
+import com.cyf.lezu.requests.MySimpleRequest.Companion.LeZuInfoUrl
 import com.cyf.lezu.requests.MySimpleRequest.Companion.SYS_INFO
 import com.cyf.lezu.toast
+import com.cyf.lezu.utils.AppPath
+import com.cyf.lezu.utils.CustomDialog
+import com.cyf.lezu.utils.VersionUtil
 import com.cyf.union.activities.LoginActivity
+import com.cyf.union.activities.WebActivity
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+
 
 /**
  * ChaYin
  * Created by ${蔡雨峰} on 2018/1/4/004.
  */
-class MainActivity : MyBaseActivity(), View.OnClickListener {
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.startWork -> {
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
-            R.id.introduce -> {
-            }
-            R.id.newsInfo -> {
-            }
-        }
-    }
+class MainActivity : MyBaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermission(onDenied = {
             finish()
         })
-
-        getSystemInfo()
+        AppPath(this)
         setContentView(R.layout.activity_main)
-        startWork.setOnClickListener(this)
-        introduce.setOnClickListener(this)
-        newsInfo.setOnClickListener(this)
+        getSystemInfo()
+        startWork.setOnClickListener{
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        introduce.setOnClickListener{
+            val intent = Intent(this, WebActivity::class.java)
+            intent.putExtra("type", 2)
+            intent.putExtra("html", LeZuInfoUrl)
+            intent.putExtra("pageName", "平台介绍")
+            startActivity(intent)
+        }
+        newsInfo.setOnClickListener{
+            val intent = Intent(this, WebActivity::class.java)
+            intent.putExtra("type", 2)
+            intent.putExtra("html", LeZuInfoUrl)
+            intent.putExtra("pageName", "新闻资讯")
+            startActivity(intent)
+        }
+        version.setOnClickListener{
+            checkVersion()
+        }
+    }
+
+    private fun checkVersion(){
+        val version = VersionUtil(this)
+        version.check(object : VersionUtil.VersionCallBack {
+            override fun hasNewVersion(versionName: String, versionCode: Int, url: String, oldVerName: String, oldVerCode: Int) {
+                CustomDialog("发现新版本", "是否更新？\n当前版本为：${oldVerName}\n最新版本为：${versionName}"
+                        , "立即更新", android.content.DialogInterface.OnClickListener { dialog, which ->
+                    toast("正在后台下载...")
+                    version.downLoadFile(
+                            url,
+                            "${AppPath.APK}LeZu_${versionName}.apk",
+                            object : VersionUtil.ReqProgressCallBack {
+                                override fun onProgress(total: Long, current: Long) {
+
+                                }
+
+                                override fun onSuccess(file: File) {
+                                    version.installApk(file)
+                                }
+
+                                override fun onFailed(e: String) {
+                                    toast("新版本下载失败")
+                                }
+                            }
+                    )
+                }, "暂不更新")
+            }
+
+            override fun noNewVersion(versionName: String, versionCode: Int) {
+                CustomDialog("已是最新版本", "当前版本为：${versionName}")
+            }
+
+        })
     }
 
     private fun getSystemInfo() {
@@ -52,7 +97,6 @@ class MainActivity : MyBaseActivity(), View.OnClickListener {
             }
 
             override fun onError(error: String) {
-                D("onError = ")
                 toast(error)
             }
 

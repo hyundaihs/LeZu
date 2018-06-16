@@ -3,6 +3,7 @@
     <string name="login">登录</string>
     <string name="start_work">开始工作</string>
     <string name="news_info">最新资讯</string>
+    <string name="version">版本检测</string>
     <string name="introduce">平台介绍</string>
     <string name="helpInfo">账号注册</string>
     <string name="forgetPsd">忘记密码</string>

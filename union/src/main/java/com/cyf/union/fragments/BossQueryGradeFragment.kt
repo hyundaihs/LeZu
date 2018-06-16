@@ -92,7 +92,7 @@ class BossQueryGradeFragment() : BaseFragment() {
 
     private fun initViews() {
         AppUnion.edu = 10000 - storeInfoBoss.yhqff.toInt()
-        boss_query_grade_yue.setText("提现余额:¥${storeInfoBoss.ye_price}")
+        boss_query_grade_yue.setText("提现余额:\n¥${storeInfoBoss.ye_price}")
         Picasso.with(activity).load(IMAGE_URL + storeInfoBoss.ewm_file_url).into(boss_query_grade_ewm_pic)
         boss_query_grade_ewm.setText("店铺二维码:${storeInfoBoss.id}")
         initRecyclerView()

@@ -101,9 +101,11 @@ class WorkSalePlatFragment : BaseFragment() {
             if (banner.http_url == "") {
                 intent.putExtra("type", 0)
                 intent.putExtra("html", banner.contents)
+                intent.putExtra("pageName", "平台信息")
             } else {
                 intent.putExtra("type", 1)
                 intent.putExtra("html", banner.http_url)
+                intent.putExtra("pageName", "平台信息")
                 intent.putExtra("title", banner.goods_title)
                 intent.putExtra("price1", banner.zl_price1)
                 intent.putExtra("price2", banner.price)
@@ -131,8 +133,11 @@ class WorkSalePlatFragment : BaseFragment() {
             picasso.load(MySimpleRequest.IMAGE_URL + goods.file_url).into(holder.itemView.goodsImage)
             holder.itemView.goodsName.text = goods.title
             holder.itemView.goodsRent.text = "租赁:¥${goods.zl_price1}-¥${goods.zl_price2}/月"
-//            holder.itemView.goodsDeposit.text = "押金:¥${goods.deposit}"
             holder.itemView.goodsPrice.text = "购买:¥${goods.price}"
+            holder.itemView.goodsXingHao.visibility = View.GONE
+            holder.itemView.goodsGuige.visibility = View.GONE
+            holder.itemView.goodsColor.visibility = View.GONE
+            holder.itemView.goodsCount.visibility = View.GONE
             holder.itemView.share.setOnClickListener {
                 val view = LayoutInflater.from(holder.itemView.context).inflate(R.layout.layout_wx_share, null, false)
                 val dialog = holder.itemView.context.BottomDialog(view)

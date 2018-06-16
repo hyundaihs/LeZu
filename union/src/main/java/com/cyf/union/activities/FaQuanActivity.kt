@@ -50,12 +50,16 @@ class FaQuanActivity : MyBaseActivity() {
         price = intent.getIntExtra("price", 0)
         type = intent.getIntExtra("type", 1)
         initActionBar(this, "发送${price}元券", rightBtn = "发送", rightClick = {
-            if (checkData()) {
-                if (AppUnion.logier_id == UserID.WORKER) {
-                    faSong(FF_YHQ_YG)
-                } else {
-                    faSong(FF_YHQ)
+            if (AppUnion.edu > 0) {
+                if (checkData()) {
+                    if (AppUnion.logier_id == UserID.WORKER) {
+                        faSong(FF_YHQ_YG)
+                    } else {
+                        faSong(FF_YHQ)
+                    }
                 }
+            } else {
+                toast("额度已用完")
             }
         })
         initRecyclerView()

@@ -47,7 +47,6 @@
                     android:id="@+id/work_grade_my_ticheng"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="我的提成:\n¥0.00"
                     android:textColor="@color/red_text"/>
 
             </LinearLayout>

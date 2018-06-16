@@ -279,3 +279,12 @@ data class WorkerGrade(val id: Int, val numbers: String, val title: String, val 
                        val create_time: Long, val ztyg_id: Int, val jxyff: Int, var jx_price: Double, var jxyqr: Int, val jxff_time: Long, var backUpPrice: Double = 0.0)
 
 data class WorkerGradeListRes(val retRes: ArrayList<WorkerGrade>) : RequestResult()
+
+/**
+ *  [v_title] => 版本名称（1.0）
+[v_num] => 版本号（1）
+[http_url] => 下载地址
+ */
+data class VersionInfo(val v_title: String, val v_num: Int, val http_url: String)
+
+data class VersionInfoRes(val retRes: VersionInfo) : RequestResult()

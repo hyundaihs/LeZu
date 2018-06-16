@@ -5,6 +5,7 @@ import com.cyf.lezu.E
 import com.cyf.lezu.entity.APP_ID
 import com.cyf.lezu.entity.SystemInfo
 import com.cyf.lezu.entity.WorkerInfo
+import com.cyf.lezu.utils.AppPath
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.uuzuche.lib_zxing.activity.ZXingLibrary

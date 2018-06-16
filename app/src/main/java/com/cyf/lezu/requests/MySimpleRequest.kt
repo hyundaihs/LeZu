@@ -5,13 +5,8 @@ import com.cyf.lezu.D
 import com.cyf.lezu.entity.RequestResult
 import com.google.gson.Gson
 import com.squareup.okhttp.*
-import com.squareup.okhttp.Request
-import java.io.IOException
-import com.squareup.okhttp.RequestBody
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import java.net.CookieStore
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -28,6 +23,8 @@ public class MySimpleRequest(var callback: RequestCallBack) {
 
     companion object {
         var sessionId: String = ""
+
+        const val LeZuInfoUrl = "http://www.lovelezu.com/index.php?s=/News/index.html"
 
         private val MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8")//mdiatype 这个需要和服务端保持一致
 
@@ -96,6 +93,8 @@ public class MySimpleRequest(var callback: RequestCallBack) {
         const val FFJX = "ffjx" //店铺发放绩效给员工
 
         const val XGJX = "xgjx" //修改订单绩效金额
+
+        const val CV = "cv" //App版本
 
     }
 
@@ -176,31 +175,11 @@ public class MySimpleRequest(var callback: RequestCallBack) {
         sessionId = session.substring(0, session.indexOf(";"))
     }
 
-    class MyCallBack(private val callback: RequestCallBack) : Callback {
-        override fun onFailure(request: Request?, e: IOException) {
-            callback.onError(e.message.toString())
-        }
-
-        override fun onResponse(response: Response) {
-            val string = response.body().string()
-            val res = Gson().fromJson(string, RequestResult::class.java)
-            if (res.retInt == 1) {
-                callback.onSuccess(string)
-            } else {
-                if (res.retErr == LOGINERR) {
-                    callback.onLoginErr()
-                } else {
-                    callback.onError(res.retErr)
-                }
-            }
-        }
-
-    }
-
     interface RequestCallBack {
         fun onSuccess(result: String)
         fun onError(error: String)
         fun onLoginErr()
     }
+
 
 }

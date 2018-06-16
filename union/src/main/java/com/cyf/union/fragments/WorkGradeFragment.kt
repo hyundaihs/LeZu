@@ -110,7 +110,7 @@ class WorkGradeFragment() : BaseFragment() {
 
     private fun initViews() {
 //        work_grade_ewm_title.setText("我的二维码:${workerDetails.zt_id}")
-        work_grade_my_ticheng.setText("我的提成:\n¥${workerDetails.ye_price}")
+        work_grade_my_ticheng.setText("绩效总额:\n¥${workerDetails.yffjx}")
         val picasso = Picasso.with(activity)
         picasso.load(MySimpleRequest.IMAGE_URL + workerDetails.ewm_file_url).into(work_grade_ewm_pic)
         work_grade_ewm_pic.setOnLongClickListener() {

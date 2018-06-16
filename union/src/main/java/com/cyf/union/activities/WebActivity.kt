@@ -38,22 +38,24 @@ class WebActivity : MyBaseActivity() {
     var price1: Double = 0.0
     var price2: Double = 0.0
     var url: String = ""
+    var pageName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
         type = intent.getIntExtra("type", 0)
         html = intent.getStringExtra("html")
-        if (type == 1) {
+        pageName = intent.getStringExtra("pageName")
+        if (type == 1) {//type  为1  在线加载
             title = intent.getStringExtra("title")
             url = intent.getStringExtra("url")
             price1 = intent.getDoubleExtra("price1", 0.0)
             price2 = intent.getDoubleExtra("price2", 0.0)
-            initActionBar(this, "平台信息", rightBtn = "分享", rightClick = {
+            initActionBar(this, pageName, rightBtn = "分享", rightClick = {
                 share()
             })
         } else {
-            initActionBar(this, "平台信息")
+            initActionBar(this, pageName)
         }
         initWebView(html)
     }
@@ -73,6 +75,8 @@ class WebActivity : MyBaseActivity() {
 //        }
         //加载需要显示的网页
         if (type == 1) {
+            rule_content.loadUrl(url)
+        } else if (type == 2) {
             rule_content.loadUrl(url)
         } else {
             rule_content.loadData(url, "text/html; charset=UTF-8", null)

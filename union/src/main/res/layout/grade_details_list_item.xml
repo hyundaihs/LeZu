@@ -107,6 +107,7 @@
             android:id="@+id/edit_price"
             android:layout_width="0dp"
             android:hint="请输入绩效金额"
+            android:inputType="numberDecimal"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
