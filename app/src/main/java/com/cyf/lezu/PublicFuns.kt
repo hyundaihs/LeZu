@@ -114,7 +114,7 @@ fun Context.requestPermission(onAccepted: ((permissions: Array<String>) -> Unit)
             .start()
 }
 
-val THUMB_SIZE = 150
+val THUMB_SIZE = 50
 
 fun IWXAPI.sendBitmapToWx(bmp: Bitmap, isTimeLine: Boolean): Boolean {
 
