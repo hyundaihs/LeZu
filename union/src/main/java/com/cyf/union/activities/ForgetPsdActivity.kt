@@ -41,10 +41,10 @@ class ForgetPsdActivity : MyBaseActivity() {
                 forget_account.text.toString().trim().isEmpty() -> {
                     forget_account.setError("手机号码不能为空")
                 }
-                forget_verfcode.toString().trim().isEmpty() -> {
+                forget_verfcode.text.toString().trim().isEmpty() -> {
                     forget_verfcode.setError("验证码不能为空")
                 }
-                forget_password.toString().trim().isEmpty() -> {
+                forget_password.text.toString().trim().isEmpty() -> {
                     forget_password.setError("新密码不能为空")
                 }
                 else -> return true

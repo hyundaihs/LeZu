@@ -66,7 +66,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.squareup.okhttp:okhttp:2.0.0'
-    implementation 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+//    implementation 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation project(':app')
     implementation files('libs/BaiduLBS_Android.jar')

@@ -8,6 +8,7 @@
     <string name="helpInfo">账号注册</string>
     <string name="forgetPsd">忘记密码</string>
     <string name="workerSignIn">员工登录</string>
+    <string name="changePhone">更换绑定手机</string>
     <string name="bossSignIn">Boss登录</string>
     <string name="psdHit">密码:</string>
     <string name="accountHit">账号:</string>

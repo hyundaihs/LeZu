@@ -96,6 +96,8 @@ public class MySimpleRequest(var callback: RequestCallBack) {
 
         const val CV = "cv" //App版本
 
+        const val CACCOUNT = "caccount" //更换员工手机号码（店铺）
+
     }
 
     fun getRequest(context: Context, zipCode: String) {

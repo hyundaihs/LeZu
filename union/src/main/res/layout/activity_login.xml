@@ -78,15 +78,28 @@
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/changePhone"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@mipmap/ipbg"
+                android:text="@string/changePhone"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
+
                 <TextView
                     android:id="@+id/forgetPsdBtn"
                     style="?android:textAppearanceSmall"
@@ -113,6 +126,7 @@
                     android:padding="5dp"
                     android:text="@string/helpInfo"
                     android:textStyle="bold" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

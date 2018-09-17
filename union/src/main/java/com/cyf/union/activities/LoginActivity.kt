@@ -43,6 +43,7 @@ class LoginActivity : MyBaseActivity() {
         workSignBtn.setOnClickListener { onClick(it) }
         forgetPsdBtn.setOnClickListener { onClick(it) }
         helpInfo.setOnClickListener { onClick(it) }
+        changePhone.setOnClickListener { onClick(it) }
         boss_check_account.setText(m_Account)
         password.setText(m_Password)
     }
@@ -53,7 +54,12 @@ class LoginActivity : MyBaseActivity() {
             R.id.workSignBtn -> actionLogin(false)
             R.id.forgetPsdBtn -> forgetPsd()
             R.id.helpInfo -> regist()
+            R.id.changePhone->changePhone()
         }
+    }
+
+    private fun changePhone(){
+        startActivity(Intent(this@LoginActivity, ChangePhoneActivity::class.java))
     }
 
     private fun forgetPsd() {
