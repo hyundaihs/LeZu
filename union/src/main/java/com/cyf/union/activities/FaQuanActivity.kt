@@ -3,13 +3,11 @@ package com.cyf.union.activities
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.cyf.lezu.MyBaseActivity
@@ -80,6 +78,7 @@ class FaQuanActivity : MyBaseActivity() {
                 Pair("price", price.toString()), Pair("yxq", faquan_count.text.toString()), Pair("ids", Gson().toJson(checkIds)))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(result: String) {
+                AppUnion.edu -= price
                 CustomDialog(message = "发送成功", positiveClicked = android.content.DialogInterface.OnClickListener { dialog, which ->
                     finish()
                 })

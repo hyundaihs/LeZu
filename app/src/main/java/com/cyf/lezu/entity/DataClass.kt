@@ -43,10 +43,11 @@ data class LoginInfoRes(val retRes: LoginInfo) : RequestResult()
 [address] => 地址
 [app_contents] => 店铺介绍（html）
 [yhqff] => 本年优惠券已发放金额
+syyhq => 剩余优惠券额度
  */
 data class StoreInfoBoss(val id: Int, val account: String, val ye_price: Double, val ewm_file_url: String,
                          val login_time: Long, val file_url: String, val title: String, val hpl: Int, val address: String,
-                         val app_contents: String, val yhqff: Double)
+                         val app_contents: String, val yhqff: Double, val syyhq: Double)
 
 data class StoreInfoBossRes(val retRes: StoreInfoBoss) : RequestResult()
 
@@ -106,9 +107,11 @@ data class CheckInfoRes(val retRes: CheckInfo) : RequestResult()
 [file_url] => 头像
 [title] => 名称
 [yffjx] => 已发放绩效金额
+syyhq => 剩余优惠券额度
  */
 data class WorkerDetails(val id: Int, val title: String, val zt_id: Int, val account: String, val ye_price: Double,
-                         val ewm_file_url: String, val login_time: Long, val file_url: String, val yffjx: Double)
+                         val ewm_file_url: String, val login_time: Long, val file_url: String, val yffjx: Double,
+                         val syyhq: Double)
 
 data class WorkerDetailsRes(val retRes: WorkerDetails) : RequestResult()
 
