@@ -2,8 +2,10 @@ package com.cyf.lezu.utils;
 
 import android.text.format.Time;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -19,9 +21,12 @@ public class CalendarUtil {
     public static final String STANDARD = "yyyy-MM-dd HH:mm:ss";
     public static final String STANDARD_ = "yyyy-MM-dd\nHH:mm:ss";
     public static final String YYYY_MM = "yyyy-MM";
+    public static final String HH_mm = "HH:mm";
     public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     public static final String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
+    public static final String YYYYMMDD = "yyyyMMdd";
+    public static final String YY_MM_DD_HH_MM = "yy/MM/dd\nHH:mm";
 
     private Calendar c;
 
@@ -56,6 +61,19 @@ public class CalendarUtil {
     public CalendarUtil(int year, int month, int date, int hourOfDay, int minute, int second) {
         this();
         c.set(year, month, date, hourOfDay, minute, second);
+    }
+
+    public CalendarUtil(String dateStr) {
+        this();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+
+        Date date = null;
+        try {
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.setTime(date);
     }
 
     public void set(int year, int month, int day) {
@@ -177,4 +195,11 @@ public class CalendarUtil {
         }
     }
 
+    public Calendar getC() {
+        return c;
+    }
+
+    public void setC(Calendar c) {
+        this.c = c;
+    }
 }

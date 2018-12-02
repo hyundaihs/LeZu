@@ -3,7 +3,6 @@ package com.cyf.union.activities
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.icu.lang.UScript.getCode
 import android.os.Bundle
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.initActionBar
@@ -13,7 +12,11 @@ import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.lezu.utils.MyProgressDialog
 import com.cyf.union.R
+import com.cyf.union.entity.CACCOUNT
+import com.cyf.union.entity.getInterface
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_change_phone.*
+import org.jetbrains.anko.toast
 
 /**
  * ChaYin
@@ -45,31 +48,26 @@ class ChangePhoneActivity : MyBaseActivity() {
     }
 
     fun submit() {
-        val dialog = MyProgressDialog(this)
         val map = mapOf(Pair("account_old", old_phone.text.toString())
                 , Pair("account_new", new_phone.text.toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
-                dialog.dismiss()
+            override fun onSuccess(context: Context, result: String) {
                 CustomDialog(message = "更换手机申请成功", positiveClicked = DialogInterface.OnClickListener { dialog, which ->
                     finish()
                 })
             }
 
-            override fun onError(error: String) {
-                dialog.dismiss()
-                toast(error)
+            override fun onError(context: Context, error: String) {
                 CustomDialog("错误", message = error)
             }
 
-            override fun onLoginErr() {
-                dialog.dismiss()
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@ChangePhoneActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, MySimpleRequest.CACCOUNT, map)
+        }).postRequest(this, CACCOUNT.getInterface(), map)
     }
 }

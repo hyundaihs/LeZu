@@ -10,8 +10,6 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import com.cyf.lezu.R
-import com.cyf.lezu.requests.MySimpleRequest
-import com.cyf.lezu.toast
 import com.squareup.picasso.Picasso
 
 
@@ -47,15 +45,6 @@ fun Context.CustomDialog(title: String = "提示", message: String, positive: St
         })
     }
     return builder.show()
-}
-
-fun Context.ShowImageDialog(url: String) {
-    val dialog = Dialog(this)
-    dialog.setCancelable(true)
-    val imageView = ImageView(this)
-    dialog.setContentView(imageView)
-    Picasso.with(this).load(MySimpleRequest.IMAGE_URL + url).into(imageView)
-    dialog.show()
 }
 
 fun Context.BottomDialog(view: View): Dialog {

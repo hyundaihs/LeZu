@@ -21,20 +21,23 @@ import com.cyf.lezu.toast
 import com.cyf.lezu.utils.BottomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.lezu.utils.MyProgressDialog
-import com.cyf.lezu.utils.ShowImageDialog
 import com.cyf.lezu.widget.GlideImageLoader
 import com.cyf.union.AppUnion
 import com.cyf.union.R
+import com.cyf.union.ShowImageDialog
 import com.cyf.union.activities.LoginActivity
 import com.cyf.union.activities.WebActivity
+import com.cyf.union.entity.IMAGE_URL
+import com.cyf.union.entity.YGINFO
+import com.cyf.union.entity.ZT_INDEX
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import kotlinx.android.synthetic.main.fragment_worker_sale.*
 import kotlinx.android.synthetic.main.layout_wx_share.view.*
 import kotlinx.android.synthetic.main.work_saleplat_list_item.view.*
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * ChaYin
@@ -64,7 +67,7 @@ class WorkSalePlatFragment : BaseFragment() {
     private fun getStoreDetails() {
         val map = mapOf(Pair("", ""))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val storeDetailsWorkerRes = Gson().fromJson(result, StoreDetailsWorkerRes::class.java)
                 banners.clear()
                 banners.addAll(storeDetailsWorkerRes.retRes.banner)
@@ -75,24 +78,24 @@ class WorkSalePlatFragment : BaseFragment() {
                 adapter.notifyDataSetChanged()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(activity as Context, MySimpleRequest.ZT_INDEX, map)
+        }, false).postRequest(activity as Context, ZT_INDEX.getInterface(), map)
     }
 
     private fun initBanner() {
         val images = ArrayList<String>()
         for (i in 0 until banners.size) {
-            images.add(MySimpleRequest.IMAGE_URL + banners[i].file_url)
+            images.add(IMAGE_URL + banners[i].file_url)
         }
         banner.setImages(images).setImageLoader(GlideImageLoader()).start()
         banner.setOnBannerListener {
@@ -130,7 +133,7 @@ class WorkSalePlatFragment : BaseFragment() {
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             val goods = data[position]
             val picasso = Picasso.with(holder.itemView.context)
-            picasso.load(MySimpleRequest.IMAGE_URL + goods.file_url).into(holder.itemView.goodsImage)
+            picasso.load(IMAGE_URL + goods.file_url).into(holder.itemView.goodsImage)
             holder.itemView.goodsName.text = goods.title
             holder.itemView.goodsRent.text = "租赁:¥${goods.zl_price1}-¥${goods.zl_price2}/月"
             holder.itemView.goodsPrice.text = "购买:¥${goods.price}"
@@ -146,7 +149,7 @@ class WorkSalePlatFragment : BaseFragment() {
                     dialog.dismiss()
                     val pDialog = MyProgressDialog(holder.itemView.context)
                     doAsync {
-                        val bitmap = picasso.load(MySimpleRequest.IMAGE_URL + goods.file_url).get()
+                        val bitmap = picasso.load(IMAGE_URL + goods.file_url).get()
                         uiThread {
                             val rel = AppUnion.instance.api.sendToWx(goods.title, goods.zl_price1, goods.price, goods.http_url, bmp = bitmap, isTimeLine = true)
                             pDialog.dismiss()
@@ -158,7 +161,7 @@ class WorkSalePlatFragment : BaseFragment() {
                     dialog.dismiss()
                     val pDialog = MyProgressDialog(holder.itemView.context)
                     doAsync {
-                        val bitmap = picasso.load(MySimpleRequest.IMAGE_URL + goods.file_url).get()
+                        val bitmap = picasso.load(IMAGE_URL + goods.file_url).get()
                         uiThread {
                             val rel = AppUnion.instance.api.sendToWx(goods.title, goods.zl_price1, goods.price, goods.http_url, bmp = bitmap, isTimeLine = false)
                             D("发送${if (rel) "成功" else "失败"}")
@@ -186,23 +189,23 @@ class WorkSalePlatFragment : BaseFragment() {
     private fun getWorkerDetails() {
         val map = mapOf(Pair("", ""))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val workerDetailsRes = Gson().fromJson(result, WorkerDetailsRes::class.java)
                 workerDetails = workerDetailsRes.retRes
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(activity as Context, MySimpleRequest.YGINFO, map)
+        }, false).postRequest(activity as Context, YGINFO.getInterface(), map)
     }
 
 }

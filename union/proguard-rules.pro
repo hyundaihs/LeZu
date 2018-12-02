@@ -63,9 +63,7 @@
 -keep class com.google.code.gson.**{
 *;
 }
--keep class com.squareup.okhttp.**{
-*;
-}
+
 -keep class com.squareup.picasso.**{
 *;
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import com.cyf.lezu.MyBaseActivity
+import com.cyf.lezu.entity.VipListRes
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
@@ -12,6 +13,10 @@ import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.lezu.utils.MyProgressDialog
 import com.cyf.union.R
+import com.cyf.union.entity.FPASS
+import com.cyf.union.entity.SENDMSG
+import com.cyf.union.entity.getInterface
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_forgetpsd.*
 
 /**
@@ -55,59 +60,51 @@ class ForgetPsdActivity : MyBaseActivity() {
 
     private fun getCode() {
         if (check(true)) {
-            val dialog = MyProgressDialog(this)
             val map = mapOf(Pair("phone", forget_account.text.toString()))
             MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-                override fun onSuccess(result: String) {
-                    dialog.dismiss()
+                override fun onSuccess(context: Context, result: String) {
                 }
 
-                override fun onError(error: String) {
-                    dialog.dismiss()
+                override fun onError(context: Context, error: String) {
                     toast(error)
                     CustomDialog("错误", message = error)
                 }
 
-                override fun onLoginErr() {
-                    dialog.dismiss()
+                override fun onLoginErr(context: Context) {
                     LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                         val intent = Intent(this@ForgetPsdActivity, LoginActivity::class.java)
                         startActivity(intent)
                     })
                 }
 
-            }).postRequest(this as Context, MySimpleRequest.SENDMSG, map)
+            }).postRequest(this, SENDMSG.getInterface(), map)
         }
     }
 
     fun submit() {
-        val dialog = MyProgressDialog(this)
         val map = mapOf(Pair("account", forget_account.text.toString())
                 , Pair("password", forget_password.text.toString())
                 , Pair("verf", forget_verfcode.text.toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
-                dialog.dismiss()
+            override fun onSuccess(context: Context, result: String) {
                 CustomDialog(message = "新密码修改成功", positiveClicked = android.content.DialogInterface.OnClickListener { dialog, which ->
                     finish()
                 })
             }
 
-            override fun onError(error: String) {
-                dialog.dismiss()
+            override fun onError(context: Context, error: String) {
                 toast(error)
                 CustomDialog("错误", message = error)
             }
 
-            override fun onLoginErr() {
-                dialog.dismiss()
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@ForgetPsdActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, MySimpleRequest.FPASS, map)
+        }).postRequest(this, FPASS.getInterface(), map)
     }
 
 

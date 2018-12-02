@@ -19,9 +19,14 @@ import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
 import com.cyf.lezu.utils.LoginErrDialog
+import com.cyf.union.AppUnion
 import com.cyf.union.R
+import com.cyf.union.entity.IMAGE_URL
+import com.cyf.union.entity.ORDER_INFO
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.work_saleplat_list_item.view.*
 import kotlinx.android.synthetic.main.work_saleplat_zjlist_item.view.*
@@ -97,31 +102,31 @@ class OrderDetailsActivity : MyBaseActivity() {
     private fun getOrderDetails() {
         val map = mapOf(Pair("orders_id", id.toString()), Pair("type", type))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val orderDetailsRes = Gson().fromJson(result, OrdersDetailsRes::class.java)
                 val ordersDetails = orderDetailsRes.retRes
                 isGouMai = ordersDetails.zg_zq == ""
                 refreshViews(ordersDetails)
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@OrderDetailsActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, MySimpleRequest.ORDER_INFO, map)
+        },false).postRequest(this, ORDER_INFO.getInterface(), map)
     }
 
     private class MyAdapter(val data: ArrayList<GoodsNoId>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             val goods = data[position]
-            Picasso.with(holder.itemView.context).load(MySimpleRequest.IMAGE_URL + goods.file_url).into(holder.itemView.goodsImage)
+            Picasso.with(holder.itemView.context).load(IMAGE_URL + goods.file_url).into(holder.itemView.goodsImage)
             holder.itemView.goodsName.text = goods.title
             if (isGouMai) {
                 holder.itemView.goodsPrice.text = "购买:¥${goods.price}"

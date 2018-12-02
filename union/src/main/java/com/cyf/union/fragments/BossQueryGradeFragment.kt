@@ -20,17 +20,18 @@ import com.cyf.lezu.entity.WorkerListRes
 import com.cyf.lezu.fragments.BaseFragment
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
-import com.cyf.lezu.requests.MySimpleRequest.Companion.IMAGE_URL
-import com.cyf.lezu.requests.MySimpleRequest.Companion.YG_LISTS
-import com.cyf.lezu.requests.MySimpleRequest.Companion.ZT_INFO
 import com.cyf.lezu.toast
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.union.AppUnion
 import com.cyf.union.AppUnion.Companion.workerList
-import com.cyf.union.activities.LoginActivity
 import com.cyf.union.R
+import com.cyf.union.activities.LoginActivity
 import com.cyf.union.activities.TiXianActivity
 import com.cyf.union.activities.WorkerGradeActivity
+import com.cyf.union.entity.IMAGE_URL
+import com.cyf.union.entity.YG_LISTS
+import com.cyf.union.entity.ZT_INFO
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_boss_query_grade.*
@@ -70,24 +71,24 @@ class BossQueryGradeFragment() : BaseFragment() {
     private fun getStoreInfo() {
         val map = mapOf(Pair("", ""))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val storeInfoBossRes = Gson().fromJson(result, StoreInfoBossRes::class.java)
                 storeInfoBoss = storeInfoBossRes.retRes
                 initViews()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(activity as Context, ZT_INFO, map)
+        }, false).postRequest(activity as Context, ZT_INFO.getInterface(), map)
     }
 
     private fun initViews() {
@@ -104,25 +105,25 @@ class BossQueryGradeFragment() : BaseFragment() {
     private fun getWorkerList() {
         val map = mapOf(Pair("", ""))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val workerListRes = Gson().fromJson(result, WorkerListRes::class.java)
                 workerList.clear()
                 workerList.addAll(workerListRes.retRes)
                 adapter.notifyDataSetChanged()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(activity as Context, YG_LISTS, map)
+        }, false).postRequest(activity as Context, YG_LISTS.getInterface(), map)
     }
 
     private fun initRecyclerView() {

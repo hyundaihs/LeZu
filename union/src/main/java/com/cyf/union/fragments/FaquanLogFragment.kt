@@ -14,11 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.cyf.lezu.D
 import com.cyf.lezu.adapters.LineDecoration
-import com.cyf.lezu.entity.*
+import com.cyf.lezu.entity.YHQInfo
+import com.cyf.lezu.entity.YHQInfoListRes
 import com.cyf.lezu.fragments.BaseFragment
 import com.cyf.lezu.requests.MySimpleRequest
-import com.cyf.lezu.requests.MySimpleRequest.Companion.YHQ_LISTS
-import com.cyf.lezu.requests.MySimpleRequest.Companion.YHQ_LISTS_YG
 import com.cyf.lezu.toast
 import com.cyf.lezu.utils.CalendarUtil
 import com.cyf.lezu.utils.LoginErrDialog
@@ -27,9 +26,11 @@ import com.cyf.union.R
 import com.cyf.union.UserID
 import com.cyf.union.activities.LoginActivity
 import com.cyf.union.adapters.EndLessOnScrollListener
+import com.cyf.union.entity.YHQ_LISTS
+import com.cyf.union.entity.YHQ_LISTS_YG
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_faquan_log.*
-import kotlinx.android.synthetic.main.layout_faquan_list_item.view.*
 import kotlinx.android.synthetic.main.layout_faquan_log_list_item.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -102,7 +103,7 @@ class FaquanLogFragment : BaseFragment() {
         )
         val inter = if (AppUnion.logier_id == UserID.WORKER) YHQ_LISTS_YG else YHQ_LISTS
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val yhqInfoListRes = Gson().fromJson(result, YHQInfoListRes::class.java)
                 if (isRefresh) {
                     data.clear()
@@ -113,12 +114,12 @@ class FaquanLogFragment : BaseFragment() {
                 faquan_log_swipe_layout.isRefreshing = false
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
                 faquan_log_swipe_layout.isRefreshing = false
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
@@ -126,7 +127,7 @@ class FaquanLogFragment : BaseFragment() {
                 faquan_log_swipe_layout.isRefreshing = false
             }
 
-        }).postRequest(activity as Context, inter, map)
+        }, false).postRequest(activity as Context, inter.getInterface(), map)
     }
 
     private class MyAdapter(val data: ArrayList<YHQInfo>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mMapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mMapView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/latitudeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="纬度：3202232"
+                android:textColor="@color/text_333333"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/longitudeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="纬度：3202232"
+                android:textColor="@color/text_333333"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/localBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="开启连续定位"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/text_FFFFFF"
+            android:background="@drawable/green_corner" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

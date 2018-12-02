@@ -1,15 +1,14 @@
 package com.cyf.union.activities
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.cyf.lezu.MyBaseActivity
@@ -18,16 +17,13 @@ import com.cyf.lezu.entity.VipInfo
 import com.cyf.lezu.entity.VipListRes
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
-import com.cyf.lezu.requests.MySimpleRequest.Companion.FF_YHQ
-import com.cyf.lezu.requests.MySimpleRequest.Companion.FF_YHQ_YG
-import com.cyf.lezu.requests.MySimpleRequest.Companion.ZT_ACCOUNT_LISTS
-import com.cyf.lezu.requests.MySimpleRequest.Companion.ZT_ACCOUNT_LISTS_YG
 import com.cyf.lezu.toast
 import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.union.AppUnion
 import com.cyf.union.R
 import com.cyf.union.UserID
+import com.cyf.union.entity.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_faquan.*
 import kotlinx.android.synthetic.main.layout_faquan_list_item.view.*
@@ -79,24 +75,24 @@ class FaQuanActivity : MyBaseActivity() {
         val map = mapOf(Pair("type_id", type.toString()), Pair("num", faquan_count.text.toString()),
                 Pair("price", price.toString()), Pair("yxq", faquan_count.text.toString()), Pair("ids", Gson().toJson(checkIds)))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 CustomDialog(message = "发送成功", positiveClicked = android.content.DialogInterface.OnClickListener { dialog, which ->
                     finish()
                 })
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@FaQuanActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this, inter, map)
+        }).postRequest(this, inter.getInterface(), map)
     }
 
     private fun checkData(): Boolean {
@@ -126,7 +122,7 @@ class FaQuanActivity : MyBaseActivity() {
     private fun getHyList(inter: String) {
         val map = mapOf(Pair("page", "1"), Pair("pagesize", "100"))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val vipListRes = Gson().fromJson(result, VipListRes::class.java)
                 data.clear()
                 data.addAll(vipListRes.retRes)
@@ -134,18 +130,18 @@ class FaQuanActivity : MyBaseActivity() {
                 adapter.notifyDataSetChanged()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@FaQuanActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this, inter, map)
+        }).postRequest(this, inter.getInterface(), map)
     }
 
     class MyAdapter(val data: ArrayList<VipInfo>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {

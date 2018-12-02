@@ -13,15 +13,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.adapters.LineDecoration
+import com.cyf.lezu.entity.OrdersDetailsRes
 import com.cyf.lezu.entity.WorkerGrade
 import com.cyf.lezu.entity.WorkerGradeListRes
 import com.cyf.lezu.getTime
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
-import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.union.R
+import com.cyf.union.entity.ORDER_INFO
+import com.cyf.union.entity.YGJX
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_worker_grade.*
 import kotlinx.android.synthetic.main.grade_details_simple_list_item.view.*
@@ -58,25 +61,25 @@ class RealPayLogActivity : MyBaseActivity() {
     private fun getWorkerGradeDetails(id: Int) {
         val map = mapOf(Pair("yg_id", id.toString()), Pair("jxyff", "0"))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val workerGrade = Gson().fromJson(result, WorkerGradeListRes::class.java)
                 data.clear()
                 data.addAll(workerGrade.retRes)
                 adapter.notifyDataSetChanged()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@RealPayLogActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, MySimpleRequest.YGJX, map)
+        },false).postRequest(this, YGJX.getInterface(), map)
     }
 
     class MyAdapter(val data: ArrayList<WorkerGrade>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {

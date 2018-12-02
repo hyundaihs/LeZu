@@ -1,4 +1,4 @@
-package com.cyf.lezu.utils
+package com.cyf.team
 
 import android.app.Activity
 import android.content.Context
@@ -9,17 +9,13 @@ import android.support.v4.content.FileProvider
 import android.text.TextUtils
 import com.cyf.lezu.D
 import com.cyf.lezu.E
-import com.cyf.lezu.entity.SystemInfoRes
 import com.cyf.lezu.entity.VersionInfo
 import com.cyf.lezu.entity.VersionInfoRes
 import com.cyf.lezu.requests.MySimpleRequest
-import com.cyf.lezu.toast
+import com.cyf.team.entity.CV
+import com.cyf.team.entity.getInterface
 import com.google.gson.Gson
-import com.squareup.okhttp.Callback
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
-import com.squareup.okhttp.Response
-import junit.runner.Version
+import okhttp3.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.io.File
@@ -49,21 +45,20 @@ class VersionUtil(val context: Activity) {
 
     private fun getServiceVersion(versionCallBack: VersionCallBack) {
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val versionInfoRes = Gson().fromJson(result, VersionInfoRes::class.java)
                 val versionInfo = versionInfoRes.retRes
                 match(versionInfo, versionCallBack)
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 versionCallBack.noNewVersion(localVersionName, localVersionCode)
             }
 
-            override fun onLoginErr() {
-
+            override fun onLoginErr(context: Context) {
             }
 
-        }).postRequest(context, MySimpleRequest.CV, mapOf(Pair("app", "android")))
+        }, false).postRequest(context, CV.getInterface(), mapOf(Pair("app", "android")))
     }
 
     private fun match(versionInfo: VersionInfo, versionCallBack: VersionCallBack) {
@@ -95,22 +90,22 @@ class VersionUtil(val context: Activity) {
             val request = Request.Builder().url(fileUrl).build()
             val call = mOkHttpClient.newCall(request)
             call.enqueue(object : Callback {
-                override fun onFailure(request: Request, e: IOException) {
+                override fun onFailure(call: Call, e: IOException) {
                     E(e.toString())
                     uiThread {
                         callBack.onFailed(e.toString())
                     }
                 }
 
-                override fun onResponse(response: Response) {
+                override fun onResponse(call: Call, response: Response) {
                     var ips: InputStream? = null
                     val buf = ByteArray(2048)
                     var len = 0
                     var fos: FileOutputStream? = null
                     try {
-                        val total = response.body().contentLength()
+                        val total = response.body()!!.contentLength()
                         var current: Long = 0
-                        ips = response.body().byteStream()
+                        ips = response.body()!!.byteStream()
                         fos = FileOutputStream(file)
                         if (ips == null) {
                             uiThread {

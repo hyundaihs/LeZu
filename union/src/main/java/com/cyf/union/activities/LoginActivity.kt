@@ -1,5 +1,6 @@
 package com.cyf.union.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -7,8 +8,6 @@ import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.entity.LoginInfoRes
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
-import com.cyf.lezu.requests.MySimpleRequest.Companion.LOGIN
-import com.cyf.lezu.requests.MySimpleRequest.Companion.LOGINYG
 import com.cyf.lezu.toast
 import com.cyf.lezu.utils.PreferenceUtil
 import com.cyf.lezu.utils.PreferenceUtil.Companion.ACCOUNT
@@ -17,6 +16,9 @@ import com.cyf.lezu.utils.PreferenceUtil.Companion.PASSWORD
 import com.cyf.union.AppUnion
 import com.cyf.union.R
 import com.cyf.union.UserID
+import com.cyf.union.entity.LOGIN
+import com.cyf.union.entity.LOGINYG
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -83,11 +85,7 @@ class LoginActivity : MyBaseActivity() {
 
         val map = mapOf(Pair("account", boss_check_account.text.toString()), Pair("password", password.text.toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onLoginErr() {
-                loadLayout.isRefreshing = false
-            }
-
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 loadLayout.isRefreshing = false
                 val loginInfoRes = Gson().fromJson(result, LoginInfoRes::class.java)
                 login_verf = loginInfoRes.retRes.login_verf
@@ -98,12 +96,16 @@ class LoginActivity : MyBaseActivity() {
                 gotoHome()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 loadLayout.isRefreshing = false
                 toast("登陆失败" + error)
             }
 
-        }).postRequest(this, inter, map)
+            override fun onLoginErr(context: Context) {
+                loadLayout.isRefreshing = false
+            }
+
+        },false).postRequest(this, inter.getInterface(), map)
     }
 
     private fun gotoHome() {

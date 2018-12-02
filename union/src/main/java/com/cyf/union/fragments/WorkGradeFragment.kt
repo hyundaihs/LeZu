@@ -20,13 +20,18 @@ import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.utils.*
 import com.cyf.union.AppUnion
 import com.cyf.union.R
+import com.cyf.union.ShowImageDialog
 import com.cyf.union.activities.*
+import com.cyf.union.entity.IMAGE_URL
+import com.cyf.union.entity.YGINFO
+import com.cyf.union.entity.YGJXYG
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_faquan_log.*
 import kotlinx.android.synthetic.main.fragment_worker_grade.*
 import kotlinx.android.synthetic.main.layout_wx_share.view.*
 import kotlinx.android.synthetic.main.work_grade_details_list_item.view.*
-import kotlinx.android.synthetic.main.work_grade_list_item.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -63,56 +68,56 @@ class WorkGradeFragment() : BaseFragment() {
     private fun getWorkerDetails() {
         val map = mapOf(Pair("", ""))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val workerDetailsRes = Gson().fromJson(result, WorkerDetailsRes::class.java)
                 workerDetails = workerDetailsRes.retRes
                 getWorkerGradeDetails()
                 initViews()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(activity as Context, MySimpleRequest.YGINFO, map)
+        }, false).postRequest(activity as Context, YGINFO.getInterface(), map)
     }
 
     private fun getWorkerGradeDetails() {
         val map = mapOf(Pair("jxyff", "0"))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val workerGrade = Gson().fromJson(result, WorkerGradeListRes::class.java)
                 data.clear()
                 data.addAll(workerGrade.retRes)
                 adapter.notifyDataSetChanged()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(activity as Context, MySimpleRequest.YGJXYG, map)
+        }, false).postRequest(activity as Context, YGJXYG.getInterface(), map)
     }
 
     private fun initViews() {
 //        work_grade_ewm_title.setText("我的二维码:${workerDetails.zt_id}")
         work_grade_my_ticheng.setText("绩效总额:\n¥${workerDetails.yffjx}")
         val picasso = Picasso.with(activity)
-        picasso.load(MySimpleRequest.IMAGE_URL + workerDetails.ewm_file_url).into(work_grade_ewm_pic)
+        picasso.load(IMAGE_URL + workerDetails.ewm_file_url).into(work_grade_ewm_pic)
         work_grade_ewm_pic.setOnLongClickListener() {
             val view = LayoutInflater.from(activity as Context).inflate(R.layout.layout_wx_share, null, false)
             val dialog = (activity as Context).BottomDialog(view)
@@ -121,7 +126,7 @@ class WorkGradeFragment() : BaseFragment() {
                 dialog.dismiss()
                 val pDialog = MyProgressDialog(activity as Context)
                 doAsync {
-                    val bitmap = picasso.load(MySimpleRequest.IMAGE_URL + workerDetails.ewm_file_url).get()
+                    val bitmap = picasso.load(IMAGE_URL + workerDetails.ewm_file_url).get()
                     uiThread {
                         val rel = AppUnion.instance.api.sendBitmapToWx(bitmap, true)
                         pDialog.dismiss()
@@ -133,7 +138,7 @@ class WorkGradeFragment() : BaseFragment() {
                 dialog.dismiss()
                 val pDialog = MyProgressDialog(activity as Context)
                 doAsync {
-                    val bitmap = picasso.load(MySimpleRequest.IMAGE_URL + workerDetails.ewm_file_url).get()
+                    val bitmap = picasso.load(IMAGE_URL + workerDetails.ewm_file_url).get()
                     uiThread {
                         val rel = AppUnion.instance.api.sendBitmapToWx(bitmap, false)
                         D("发送${if (rel) "成功" else "失败"}")

@@ -12,6 +12,9 @@ import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.lezu.utils.MyProgressDialog
 import com.cyf.union.R
+import com.cyf.union.entity.REG
+import com.cyf.union.entity.TXSQ
+import com.cyf.union.entity.getInterface
 import kotlinx.android.synthetic.main.activity_ti_xian.*
 
 /**
@@ -51,34 +54,30 @@ class TiXianActivity : MyBaseActivity() {
     }
 
     private fun submit() {
-        val dialog = MyProgressDialog(this)
         val map = mapOf(Pair("bank_name", ti_xian_bank_name.text.toString()),
                 Pair("card_numbers", ti_xian_bank_num.text.toString()),
                 Pair("price", ti_xian_price.text.toString()),
                 Pair("title", ti_xian_name.text.toString()),
                 Pair("phone", ti_xian_phone.text.toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
-                dialog.dismiss()
+            override fun onSuccess(context: Context, result: String) {
                 CustomDialog(message = "提现申请成功", positiveClicked = DialogInterface.OnClickListener { _, _ ->
                     finish()
                 })
             }
 
-            override fun onError(error: String) {
-                dialog.dismiss()
+            override fun onError(context: Context, error: String) {
                 toast(error)
                 CustomDialog("错误", message = error)
             }
 
-            override fun onLoginErr() {
-                dialog.dismiss()
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@TiXianActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, MySimpleRequest.TXSQ, map)
+        }).postRequest(this, TXSQ.getInterface(), map)
     }
 }

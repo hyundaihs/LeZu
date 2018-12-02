@@ -4,23 +4,20 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import com.baidu.location.BDAbstractLocationListener
+import com.baidu.location.BDLocation
+import com.baidu.location.LocationClient
+import com.baidu.location.LocationClientOption
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
 import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
-import com.cyf.lezu.utils.MyProgressDialog
 import com.cyf.union.R
+import com.cyf.union.entity.QD
+import com.cyf.union.entity.getInterface
 import kotlinx.android.synthetic.main.activity_location.*
-import kotlinx.android.synthetic.main.activity_ti_xian.*
-import android.icu.util.ULocale.getCountry
-import com.baidu.location.BDLocation
-import com.baidu.location.BDAbstractLocationListener
-import com.baidu.location.LocationClientOption
-import com.cyf.union.activities.LocationActivity.MyLocationListener
-import com.baidu.location.LocationClient
 
 
 /**
@@ -79,32 +76,28 @@ class LocationActivity : MyBaseActivity() {
     }
 
     private fun submit() {
-        val dialog = MyProgressDialog(this)
         val map = mapOf(Pair("address", location_info.text.toString()),
                 Pair("contents", location_beizhu.text.toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
-                dialog.dismiss()
+            override fun onSuccess(context: Context, result: String) {
                 CustomDialog(message = "签到成功", positiveClicked = DialogInterface.OnClickListener { _, _ ->
                     finish()
                 })
             }
 
-            override fun onError(error: String) {
-                dialog.dismiss()
+            override fun onError(context: Context, error: String) {
                 toast(error)
                 CustomDialog("错误", message = error)
             }
 
-            override fun onLoginErr() {
-                dialog.dismiss()
-                LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+            override fun onLoginErr(context: Context) {
+                LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@LocationActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, MySimpleRequest.QD, map)
+        }).postRequest(this, QD.getInterface(), map)
     }
 
     inner class MyLocationListener : BDAbstractLocationListener() {

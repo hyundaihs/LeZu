@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.cyf.lezu.MyBaseActivity
+import com.cyf.lezu.entity.WorkerGradeListRes
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
@@ -13,8 +14,11 @@ import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.lezu.utils.MyProgressDialog
 import com.cyf.union.R
-import kotlinx.android.synthetic.main.activity_forgetpsd.*
-import kotlinx.android.synthetic.main.activity_login.*
+import com.cyf.union.entity.REG
+import com.cyf.union.entity.SENDMSG
+import com.cyf.union.entity.YGJX
+import com.cyf.union.entity.getInterface
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_registe.*
 import com.uuzuche.lib_zxing.activity.CaptureActivity
 import com.uuzuche.lib_zxing.activity.CodeUtils
@@ -74,28 +78,23 @@ class RegisteActivity : MyBaseActivity() {
 
     private fun getVerfCode() {
         if (check(true)) {
-            val dialog = MyProgressDialog(this)
             val map = mapOf(Pair("phone", registe_account.text.toString()))
             MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-                override fun onSuccess(result: String) {
-                    dialog.dismiss()
+                override fun onSuccess(context: Context, result: String) {
                 }
 
-                override fun onError(error: String) {
-                    dialog.dismiss()
+                override fun onError(context: Context, error: String) {
                     toast(error)
-                    CustomDialog("错误", message = error)
                 }
 
-                override fun onLoginErr() {
-                    dialog.dismiss()
+                override fun onLoginErr(context: Context) {
                     LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                         val intent = Intent(this@RegisteActivity, LoginActivity::class.java)
                         startActivity(intent)
                     })
                 }
 
-            }).postRequest(this as Context, MySimpleRequest.SENDMSG, map)
+            }).postRequest(this, SENDMSG.getInterface(), map)
         }
     }
 
@@ -128,34 +127,30 @@ class RegisteActivity : MyBaseActivity() {
 
     private fun submit() {
         if (check(false)) {
-            val dialog = MyProgressDialog(this)
             val map = mapOf(Pair("title", registe_account.text.toString())
                     , Pair("account", registe_account.text.toString())
                     , Pair("verf", registe_verfcode.text.toString())
                     , Pair("zt_id", registe_store.text.toString()))
             MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-                override fun onSuccess(result: String) {
-                    dialog.dismiss()
+                override fun onSuccess(context: Context, result: String) {
                     CustomDialog(message = "注册成功", positiveClicked = DialogInterface.OnClickListener { dialog, which ->
                         finish()
                     })
                 }
 
-                override fun onError(error: String) {
-                    dialog.dismiss()
+                override fun onError(context: Context, error: String) {
                     toast(error)
                     CustomDialog("错误", message = error)
                 }
 
-                override fun onLoginErr() {
-                    dialog.dismiss()
+                override fun onLoginErr(context: Context) {
                     LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                         val intent = Intent(this@RegisteActivity, LoginActivity::class.java)
                         startActivity(intent)
                     })
                 }
 
-            }).postRequest(this as Context, MySimpleRequest.REG, map)
+            }).postRequest(this, REG.getInterface(), map)
         }
     }
 

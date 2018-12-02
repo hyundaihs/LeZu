@@ -1,12 +1,19 @@
 package com.cyf.lezu.requests
 
+import android.app.AlertDialog
 import android.content.Context
+import android.os.Environment
 import com.cyf.lezu.D
-import com.cyf.lezu.entity.RequestResult
+import com.cyf.lezu.utils.MyProgressDialog
 import com.google.gson.Gson
-import com.squareup.okhttp.*
+import okhttp3.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -14,158 +21,392 @@ import org.jetbrains.anko.uiThread
  * Created by 蔡雨峰 on 2018/3/26.
  */
 
-public class MySimpleRequest(var callback: RequestCallBack) {
+public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgress: Boolean = true) {
 
 
     private val mOkHttpClient: OkHttpClient by lazy {
-        OkHttpClient()
+        val httpBuilder = OkHttpClient.Builder()
+        httpBuilder
+                //设置超时
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .writeTimeout(150, TimeUnit.SECONDS)
+                .build()
     }
 
     companion object {
         var sessionId: String = ""
 
-        const val LeZuInfoUrl = "http://www.lovelezu.com/index.php?s=/News/index.html"
-
-        private val MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8")//mdiatype 这个需要和服务端保持一致
-
-        const val IMAGE_URL = "http://weixin.lovelezu.com/"
-
-        const val ROOT_URL = IMAGE_URL + "api.php/Index/"
-
-        const val CLIENT = "/from/android"
-
-        const val KEYSTR = "/keystr/defualtencryption"
+        private val MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded charset=utf-8")//mdiatype 这个需要和服务端保持一致
 
         const val LOGINERR = "loginerr"//需要重新登录错误信息
 
-        const val SYS_INFO = "sysinfo" //获取系统信息
-
-        const val SENDMSG = "sendmsg" //发送短信验证码
-
-        const val LOGIN = "login"//Boss登陆
-
-        const val LOGINYG = "loginyg"//员工登陆
-
-        const val VERF_LOGIN = "verflogin"//Boss登陆验证码登陆
-
-        const val VERF_LOGIN_YG = "verfloginyg"//员工登陆验证码登陆
-
-        const val LOG_OUT = "logout"//退出登陆
-
-        const val ZT_INFO = "ztinfo"//店铺详情
-
-        const val YG_LISTS = "yglists"//员工列表
-
-        const val QDXQ = "qdxq"//签到详情
-
-        const val YGINFO = "yginfo"//签到详情
-
-        const val YGJX = "ygjx"//员工绩效详情（店铺）
-
-        const val ZT_INDEX = "ztindex"//店铺首页详情(员工)
-
-        const val ZT_ACCOUNT_LISTS = "ztaccountlists"//店铺会员列表
-
-        const val ZT_ACCOUNT_LISTS_YG = "ztaccountlistsyg"//员工会员列表
-
-        const val FF_YHQ = "ffyhq"//店铺发放优惠券
-
-        const val FF_YHQ_YG = "ffyhqyg"//员工发放优惠券
-
-        const val YHQ_LISTS = "yhqlists"//店铺优惠券列表
-
-        const val YHQ_LISTS_YG = "yhqlistsyg"//员工优惠券列表
-
-        const val QD = "qd"//员工签到
-
-        const val ORDER_INFO = "orderinfo"//订单详情
-
-        const val TXSQ = "txsq"//余额提现
-
-        const val REG = "reg"//员工注册
-
-        const val FPASS = "fpass"//找回密码
-
-        const val YGJXYG = "ygjxyg" // 员工绩效详情（员工）
-
-        const val QDJX = "qdjx" //确定绩效（员工）
-
-        const val FFJX = "ffjx" //店铺发放绩效给员工
-
-        const val XGJX = "xgjx" //修改订单绩效金额
-
-        const val CV = "cv" //App版本
-
-        const val CACCOUNT = "caccount" //更换员工手机号码（店铺）
 
     }
 
-    fun getRequest(context: Context, zipCode: String) {
+    fun getRequest(context: Context, url: String) {
+        var dialog: AlertDialog? = null
+        if (getProgress) {
+            dialog = MyProgressDialog(context)
+        }
         context.doAsync {
-            val request = Request.Builder().url(ROOT_URL + zipCode + CLIENT + KEYSTR).addHeader("cookie", sessionId).build()
+            val request = Request.Builder().url(url).addHeader("cookie", sessionId).build()
             val call = mOkHttpClient.newCall(request)
             //请求加入调度
             val response = call.execute()
             if (response.isSuccessful) {
-                val string = response.body().string()
+                val string = response.body()!!.string()
                 getSession(response)
                 val res = Gson().fromJson(string, RequestResult::class.java)
                 if (res.retInt == 1) {
                     uiThread {
-                        callback.onSuccess(string)
+                        if (getProgress) {
+                            dialog?.dismiss()
+                        }
+                        callback?.onSuccess(context, string)
                     }
                 } else {
                     if (res.retErr == LOGINERR) {
                         uiThread {
-                            callback.onLoginErr()
+                            if (getProgress) {
+                                dialog?.dismiss()
+                            }
+                            callback?.onLoginErr(context)
                         }
                     } else {
                         uiThread {
-                            callback.onError(res.retErr)
+                            if (getProgress) {
+                                dialog?.dismiss()
+                            }
+                            callback?.onError(context, res.retErr)
                         }
                     }
                 }
             } else {
                 uiThread {
-                    callback.onError(response.message())
+                    if (getProgress) {
+                        dialog?.dismiss()
+                    }
+                    callback?.onError(context, response.message())
                 }
             }
         }
     }
 
-    fun postRequest(context: Context, zipCode: String, map: Map<String, String>) {
+    fun postRequest(context: Context, url: String, map: Any) {
+        var dialog: AlertDialog? = null
+        if (getProgress) {
+            dialog = MyProgressDialog(context)
+        }
+        D(url + "\n" + Gson().toJson(map).toString())
         context.doAsync {
             val requestBody = RequestBody.create(MEDIA_TYPE_JSON, Gson().toJson(map))
-            val request = Request.Builder().url(ROOT_URL + zipCode + CLIENT + KEYSTR).post(requestBody).addHeader("cookie", sessionId).build()
-            val response = mOkHttpClient.newCall(request).execute()
-            if (response.isSuccessful) {
-                val string = response.body().string()
-                D("postRequest " + string)
-                getSession(response)
-                val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
-                D(res.toString())
-                if (res.retInt == 1) {
-                    uiThread {
-                        callback.onSuccess(string)
-                    }
-                } else {
-                    if (res.retErr == LOGINERR) {
+            val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
+            try {
+                val response = mOkHttpClient.newCall(request).execute()
+                if (response.isSuccessful) {
+                    val string = response.body()!!.string()
+                    getSession(response)
+                    val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
+                    D("requestResult = $string")
+                    if (res.retInt == 1) {
                         uiThread {
-                            callback.onLoginErr()
+                            if (getProgress) {
+                                dialog?.dismiss()
+                            }
+                            callback?.onSuccess(context, string)
                         }
                     } else {
-                        uiThread {
-                            callback.onError(res.retErr)
+                        if (res.retErr == LOGINERR) {
+                            uiThread {
+                                if (getProgress) {
+                                    dialog?.dismiss()
+                                }
+                                callback?.onLoginErr(context)
+                            }
+                        } else {
+                            uiThread {
+                                if (getProgress) {
+                                    dialog?.dismiss()
+                                }
+                                callback?.onError(context, res.retErr)
+                            }
                         }
                     }
+                } else {
+                    uiThread {
+                        if (getProgress) {
+                            dialog?.dismiss()
+                        }
+                        callback?.onError(context, response.message())
+                    }
                 }
-            } else {
+            } catch (e: Exception) {
                 uiThread {
-                    callback.onError(response.message())
+                    if (getProgress) {
+                        dialog?.dismiss()
+                    }
+                    callback?.onError(context, e.toString())
                 }
             }
         }
     }
+
+//    fun postRequest(context: Context, url: String, str: String) {
+//        var dialog: AlertDialog? = null
+//        if (getProgress) {
+//            dialog = MyProgressDialog(context)
+//        }
+//        D(url + "\n" + str)
+//        context.doAsync {
+//            val requestBody = RequestBody.create(MEDIA_TYPE_JSON, str)
+//            val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
+//            try {
+//                val response = mOkHttpClient.newCall(request).execute()
+//                if (response.isSuccessful) {
+//                    val string = response.body().string()
+//                    getSession(response)
+//                    val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
+//                    D("requestResult = $string")
+//                    if (res.retInt == 1) {
+//                        uiThread {
+//                            if (getProgress) {
+//                                dialog?.dismiss()
+//                            }
+//                            callback?.onSuccess(context, string)
+//                        }
+//                    } else {
+//                        if (res.retErr == LOGINERR) {
+//                            uiThread {
+//                                if (getProgress) {
+//                                    dialog?.dismiss()
+//                                }
+//                                callback?.onLoginErr(context)
+//                            }
+//                        } else {
+//                            uiThread {
+//                                if (getProgress) {
+//                                    dialog?.dismiss()
+//                                }
+//                                callback?.onError(context, res.retErr)
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    uiThread {
+//                        if (getProgress) {
+//                            dialog?.dismiss()
+//                        }
+//                        callback?.onError(context, response.message())
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                uiThread {
+//                    if (getProgress) {
+//                        dialog?.dismiss()
+//                    }
+//                    callback?.onError(context, e.toString())
+//                }
+//            }
+//        }
+//    }
+
+    fun uploadFile(context: Context, url: String, files: ArrayList<String>) {
+        var dialog: AlertDialog? = null
+        if (getProgress) {
+            dialog = MyProgressDialog(context)
+        }
+        doAsync {
+            val name = "uploadedfile[]"
+            val requestBodyBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
+            for (i in 0 until files.size) {
+                val file = File(files[i])
+                val fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file)
+                requestBodyBuilder.addFormDataPart(name, files[i].substring(files[i].lastIndexOf("/")), fileBody)
+            }
+            val requestBody = requestBodyBuilder.build()
+            val request = Request.Builder()
+                    .url(url)
+                    .post(requestBody).addHeader("cookie", sessionId)
+                    .build()
+            try {
+                val response = mOkHttpClient.newCall(request).execute()
+                if (response.isSuccessful) {
+                    val string = response.body()!!.string()
+                    getSession(response)
+                    val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
+                    if (res.retInt == 1) {
+                        uiThread {
+                            if (getProgress) {
+                                dialog?.dismiss()
+                            }
+                            callback?.onSuccess(context, string)
+                        }
+                    } else {
+                        if (res.retErr == LOGINERR) {
+                            uiThread {
+                                if (getProgress) {
+                                    dialog?.dismiss()
+                                }
+                                callback?.onLoginErr(context)
+                            }
+                        } else {
+                            uiThread {
+                                if (getProgress) {
+                                    dialog?.dismiss()
+                                }
+                                callback?.onError(context, res.retErr)
+                            }
+                        }
+                    }
+                } else {
+                    uiThread {
+                        if (getProgress) {
+                            dialog?.dismiss()
+                        }
+                        callback?.onError(context, "无响应:" + response.message())
+                    }
+                }
+            } catch (e: Exception) {
+                uiThread {
+                    if (getProgress) {
+                        dialog?.dismiss()
+                    }
+                    callback?.onError(context, "异常:" + e.toString())
+                }
+            }
+        }
+    }
+
+    fun downLoadFile(fileUrl: String, destFileDir: String, callBack: ReqProgressCallBack) {
+        doAsync {
+            val request = Request.Builder().url(fileUrl).addHeader("cookie", sessionId).build()
+            mOkHttpClient.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call?, e: IOException?) {
+                    uiThread {
+                        callBack.onFailed(e.toString())
+                    }
+                }
+
+                override fun onResponse(call: Call?, response: Response) {
+                    var ips: InputStream? = null
+                    val buf = ByteArray(2048)
+                    var len = 0
+                    var fos: FileOutputStream? = null
+//                FileUtil.isFileExist(destFileDir)
+                    // 储存下载文件的目录
+//                val savePath = isExistDir(destFileDir)
+                    try {
+                        ips = response.body()!!.byteStream()
+                        val total = response.body()!!.contentLength()
+                        val file = File(destFileDir)
+                        fos = FileOutputStream(file)
+                        if (ips == null) {
+                            uiThread {
+                                callBack.onFailed("数据获取失败")
+                            }
+                            return
+                        }
+                        var sum = 0
+                        while (true) {
+                            len = ips.read(buf)
+                            if (len == -1) {
+                                break
+                            }
+                            fos.write(buf, 0, len)
+                            sum += len
+                            val progress = (sum * 1.0f / total * 100).toLong()
+                            // 下载中
+                            uiThread {
+                                callBack.onProgress(total, progress)
+                            }
+                        }
+                        fos.flush()
+                        uiThread {
+                            callBack.onSuccess(file)
+                        }
+                    } catch (e: Exception) {
+                        uiThread {
+                            callBack.onFailed(e.toString())
+                        }
+                    } finally {
+                        try {
+                            if (ips != null)
+                                ips.close()
+                        } catch (e: IOException) {
+                        }
+                        try {
+                            if (fos != null)
+                                fos.close()
+                        } catch (e: IOException) {
+                        }
+                    }
+                }
+
+            })
+        }
+    }
+
+    /**
+     * @param saveDir
+     * @return
+     * @throws IOException
+     * 判断下载目录是否存在
+     */
+    private fun isExistDir(saveDir: String): String {
+        // 下载位置
+        val downloadFile = File(Environment.getExternalStorageDirectory(), saveDir)
+        if (!downloadFile.mkdirs()) {
+            downloadFile.createNewFile()
+        }
+        return downloadFile.absolutePath
+    }
+
+    /*
+     @Override
+            public void onFailure(Call call, IOException e) {
+                // 下载失败
+                listener.onDownloadFailed()
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                InputStream is = null
+                byte[] buf = new byte[2048]
+                int len = 0
+                FileOutputStream fos = null
+                // 储存下载文件的目录
+                String savePath = isExistDir(saveDir)
+                try {
+                    is = response.body().byteStream()
+                    long total = response.body().contentLength()
+                    File file = new File(savePath, getNameFromUrl(url))
+                    fos = new FileOutputStream(file)
+                    long sum = 0
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len)
+                        sum += len
+                        int progress = (int) (sum * 1.0f / total * 100)
+                        // 下载中
+                        listener.onDownloading(progress)
+                    }
+                    fos.flush()
+                    // 下载完成
+                    listener.onDownloadSuccess()
+                } catch (Exception e) {
+                    listener.onDownloadFailed()
+                } finally {
+                    try {
+                        if (is != null)
+                        is.close()
+                    } catch (IOException e) {
+                    }
+                    try {
+                        if (fos != null)
+                            fos.close()
+                    } catch (IOException e) {
+                    }
+                }
+            }
+     */
 
     private fun getSession(response: Response) {
         val headers = response.headers()
@@ -178,10 +419,21 @@ public class MySimpleRequest(var callback: RequestCallBack) {
     }
 
     interface RequestCallBack {
-        fun onSuccess(result: String)
-        fun onError(error: String)
-        fun onLoginErr()
+        fun onSuccess(context: Context, result: String)
+        fun onError(context: Context, error: String)
+        fun onLoginErr(context: Context)
     }
 
+    interface ReqProgressCallBack {
+        fun onProgress(total: Long, current: Long)
+        fun onSuccess(file: File)
+        fun onFailed(e: String)
+    }
 
+}
+
+open class RequestResult(val retInt: Int = 0, val retErr: String = "", val retUrl: String = "", val retCounts: Int = 0) {
+    override fun toString(): String {
+        return "RequestResult(retInt=$retInt, retErr='$retErr', retCounts=$retCounts)"
+    }
 }

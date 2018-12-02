@@ -1,29 +1,26 @@
 package com.cyf.union.activities
 
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import com.cyf.lezu.requests.MySimpleRequest
+import android.webkit.*
+import com.cyf.lezu.D
+import com.cyf.lezu.MyBaseActivity
+import com.cyf.lezu.initActionBar
+import com.cyf.lezu.sendToWx
 import com.cyf.lezu.utils.BottomDialog
 import com.cyf.lezu.utils.MyProgressDialog
-import com.cyf.lezu.utils.ShowImageDialog
 import com.cyf.union.AppUnion
 import com.cyf.union.R
+import com.cyf.union.ShowImageDialog
+import com.cyf.union.entity.IMAGE_URL
 import com.cyf.union.fragments.WorkSalePlatFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_web.*
 import kotlinx.android.synthetic.main.layout_wx_share.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import android.webkit.WebSettings
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import com.cyf.lezu.*
-import android.webkit.WebChromeClient
-import com.cyf.lezu.utils.CustomDialog
 
 
 /**
@@ -122,7 +119,7 @@ class WebActivity : MyBaseActivity() {
             dialog.dismiss()
             val pDialog = MyProgressDialog(this)
             doAsync {
-                val bitmap = picasso.load(MySimpleRequest.IMAGE_URL + url).get()
+                val bitmap = picasso.load(IMAGE_URL + url).get()
                 uiThread {
                     val rel = AppUnion.instance.api.sendToWx(title, price1, price2, html, bmp = bitmap, isTimeLine = true)
                     pDialog.dismiss()
@@ -134,7 +131,7 @@ class WebActivity : MyBaseActivity() {
             dialog.dismiss()
             val pDialog = MyProgressDialog(this)
             doAsync {
-                val bitmap = picasso.load(MySimpleRequest.IMAGE_URL + url).get()
+                val bitmap = picasso.load(IMAGE_URL + url).get()
                 uiThread {
                     val rel = AppUnion.instance.api.sendToWx(title, price1, price2, html, bmp = bitmap, isTimeLine = false)
                     D("发送${if (rel) "成功" else "失败"}")

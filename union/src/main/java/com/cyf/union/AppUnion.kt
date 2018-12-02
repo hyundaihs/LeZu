@@ -1,10 +1,15 @@
 package com.cyf.union
 
 import android.app.Application
+import android.app.Dialog
+import android.content.Context
+import android.widget.ImageView
 import com.cyf.lezu.E
 import com.cyf.lezu.entity.APP_ID
 import com.cyf.lezu.entity.SystemInfo
 import com.cyf.lezu.entity.WorkerInfo
+import com.cyf.union.entity.IMAGE_URL
+import com.squareup.picasso.Picasso
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.uuzuche.lib_zxing.activity.ZXingLibrary
@@ -42,6 +47,14 @@ class AppUnion : Application() {
     }
 }
 
+fun Context.ShowImageDialog(url: String) {
+    val dialog = Dialog(this)
+    dialog.setCancelable(true)
+    val imageView = ImageView(this)
+    dialog.setContentView(imageView)
+    Picasso.with(this).load(IMAGE_URL + url).into(imageView)
+    dialog.show()
+}
 enum class UserID {
     WORKER, BOSS
 }

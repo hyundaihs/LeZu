@@ -8,8 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +21,8 @@ import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
 import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
-import com.cyf.union.AppUnion
 import com.cyf.union.R
+import com.cyf.union.entity.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_worker_grade.*
 import kotlinx.android.synthetic.main.grade_details_list_item.view.*
@@ -86,47 +84,49 @@ class WorkerGradeActivity : MyBaseActivity() {
     private fun getWorkerGradeDetails(id: Int) {
         val map = mapOf(Pair("yg_id", id.toString()), Pair("jxyff", "0"))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val workerGrade = Gson().fromJson(result, WorkerGradeListRes::class.java)
                 data.clear()
                 data.addAll(workerGrade.retRes)
                 adapter.notifyDataSetChanged()
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 toast(error)
+                CustomDialog("错误", message = error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@WorkerGradeActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, MySimpleRequest.YGJX, map)
+        },false).postRequest(this, YGJX.getInterface(), map)
     }
 
     fun submitPrice(yg_id: Int, orders_id: Int, orders_type: String, price: Double, isChange: Boolean) {
         val map = mapOf(Pair("yg_id", yg_id.toString()), Pair("orders_id", orders_id.toString()), Pair("orders_type", orders_type)
                 , Pair("price", price.toString()), Pair("contents", ""))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 getWorkerGradeDetails(id)
             }
 
-            override fun onError(error: String) {
+            override fun onError(context: Context, error: String) {
                 toast(error)
+                CustomDialog("错误", message = error)
             }
 
-            override fun onLoginErr() {
+            override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(this@WorkerGradeActivity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(this as Context, if (isChange) MySimpleRequest.XGJX else MySimpleRequest.FFJX, map)
+        },false).postRequest(this,  if (isChange) XGJX.getInterface() else FFJX.getInterface(), map)
     }
 
 

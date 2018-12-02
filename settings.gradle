@@ -1,1 +1,1 @@
-include ':app', ':union'
+include ':app', ':union', ':team'

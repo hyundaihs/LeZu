@@ -18,11 +18,16 @@ import com.cyf.lezu.fragments.BaseFragment
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
+import com.cyf.lezu.utils.CustomDialog
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.lezu.utils.MyProgressDialog
 import com.cyf.union.AppUnion.Companion.workerList
 import com.cyf.union.activities.LoginActivity
 import com.cyf.union.R
+import com.cyf.union.entity.FFJX
+import com.cyf.union.entity.QDXQ
+import com.cyf.union.entity.XGJX
+import com.cyf.union.entity.getInterface
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_boss_check.*
 
@@ -55,33 +60,26 @@ class BossQueryCheckFragment : BaseFragment() {
             isFirst = true
             return
         }
-        val dialog = MyProgressDialog(activity as Context)
         val map = mapOf(Pair("yg_id", workerList[selectWorker].id.toString()), Pair("week_num", (selectWeek + 1).toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(result: String) {
+            override fun onSuccess(context: Context, result: String) {
                 val checkInfoRes = Gson().fromJson(result, CheckInfoRes::class.java)
                 val checkInfo = checkInfoRes.retRes
                 initViews(checkInfo)
-                if (dialog.isShowing)
-                    dialog.dismiss()
             }
 
-            override fun onError(error: String) {
-                if (dialog.isShowing)
-                    dialog.dismiss()
+            override fun onError(context: Context, error: String) {
                 activity?.toast(error)
             }
 
-            override fun onLoginErr() {
-                if (dialog.isShowing)
-                    dialog.dismiss()
+            override fun onLoginErr(context: Context) {
                 activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
 
-        }).postRequest(activity as Context, MySimpleRequest.QDXQ, map)
+        }).postRequest(activity as Context, QDXQ.getInterface(), map)
     }
 
     private fun initViews(checkInfo: CheckInfo) {
