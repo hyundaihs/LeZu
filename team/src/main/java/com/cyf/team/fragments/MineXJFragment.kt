@@ -24,8 +24,8 @@ class MineXJFragment  : BaseFragment() {
         return inflater.inflate(R.layout.fragment_mission_kg, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         activity?.initActionBar(activity as AppCompatActivity, "订单任务", false, rightBtn = "退出", rightClick = {
 
         })

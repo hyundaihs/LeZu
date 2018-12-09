@@ -56,9 +56,11 @@ const val LOGIN = "login"//Boss登陆
 
 const val JWD = "jwd"//上报经纬度
 
-const val LOGINERR = "loginerr"//需要重新登录错误信息
+const val CV = "cv" //App版本
 
-const val SYS_INFO = "sysinfo" //获取系统信息
+const val KUCUN_TYPE = "kucuntype"//产品分类
+
+const val KUCUN_LISTS = "kucunlists" //产品列表
 
 const val SENDMSG = "sendmsg" //发送短信验证码
 
@@ -111,8 +113,6 @@ const val QDJX = "qdjx" //确定绩效（员工）
 const val FFJX = "ffjx" //店铺发放绩效给员工
 
 const val XGJX = "xgjx" //修改订单绩效金额
-
-const val CV = "cv" //App版本
 
 const val CACCOUNT = "caccount" //更换员工手机号码（店铺）
 

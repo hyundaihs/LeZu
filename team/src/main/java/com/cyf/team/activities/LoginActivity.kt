@@ -105,7 +105,7 @@ class LoginActivity : MyBaseActivity() {
     private fun gotoHome() {
         if (AppTeam.isLogged) {
             val intent = Intent()
-            intent.setClass(this, HomeKGActivity::class.java)
+            intent.setClass(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
         }

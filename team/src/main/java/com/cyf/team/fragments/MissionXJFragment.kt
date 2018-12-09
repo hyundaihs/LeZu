@@ -14,12 +14,12 @@ import com.cyf.team.R
  * Created by ${蔡雨峰} on 2018/12/1/001.
  */
 class MissionXJFragment  : BaseFragment() {
-//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-//        return inflater.inflate(R.layout.fragment_mission_kg, container, false)
-//    }
-//
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        activity?.initActionBar(activity as AppCompatActivity, "资料审核", false)
-//    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_mission_xj, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        activity?.initActionBar(activity as AppCompatActivity, "资料审核", false)
+    }
 }
