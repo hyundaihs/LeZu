@@ -52,6 +52,12 @@ class MineKGFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
         activity?.initActionBar(activity as AppCompatActivity, "资产盘点", false, rightBtn = "类型", rightClick = {
             if (cargosTypes.visibility == View.VISIBLE) {
                 cargosTypes.visibility = View.GONE
@@ -59,7 +65,6 @@ class MineKGFragment : BaseFragment() {
                 cargosTypes.visibility = View.VISIBLE
             }
         })
-        initViews()
     }
 
     private fun initViews() {

@@ -6,6 +6,8 @@ import com.cyf.lezu.E
 import com.cyf.lezu.entity.APP_ID
 import com.cyf.lezu.entity.SystemInfo
 import com.cyf.lezu.entity.WorkerInfo
+import com.cyf.team.entity.CreditInfo
+import com.cyf.team.entity.UserInfo
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.uuzuche.lib_zxing.activity.ZXingLibrary
@@ -22,9 +24,11 @@ class AppTeam : Application() {
     }
 
     companion object {
-        var logier_id:Int = UserID.KU_GUAN
+        var logier_id: Int = UserID.KU_GUAN
         var isLogged: Boolean = false //是否登录
         var instance: AppTeam by Delegates.notNull()
+        var creditInfo: CreditInfo by Delegates.notNull()
+        var userInfo: UserInfo by Delegates.notNull()
     }
 
     override fun onCreate() {
@@ -40,7 +44,7 @@ class AppTeam : Application() {
     }
 }
 
-class OrderListType{
+class OrderListType {
     companion object {
         const val KG_MISSION_OUT = 0//库管-最新任务-出库
         const val KG_MISSION_IN = 1 //库管-最新任务-入库
@@ -56,6 +60,7 @@ class OrderListType{
         const val GR_ORDER_IN = 11 //巡检-订单-入库
     }
 }
+
 class UserID {
     companion object {
         const val KU_GUAN = 6

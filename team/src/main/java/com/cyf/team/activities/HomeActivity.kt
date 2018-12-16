@@ -124,6 +124,7 @@ class HomeActivity : MyBaseActivity(), BottomNavigationView.OnNavigationItemSele
         ft.show(fragments[position])
         last = position
         ft.commit()
+        fragments[position]?.onResume()
     }
 
 

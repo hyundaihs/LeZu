@@ -39,10 +39,12 @@ class LocationFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.initActionBar(activity as AppCompatActivity, "实时定位", false)
+
         mMapView.map.isMyLocationEnabled = true
         initLocationOption()
     }
+
+
 
     /**
      * 初始化定位参数配置
@@ -174,6 +176,7 @@ class LocationFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         mMapView?.onResume()
+        activity?.initActionBar(activity as AppCompatActivity, "实时定位", false)
     }
 
     override fun onPause() {

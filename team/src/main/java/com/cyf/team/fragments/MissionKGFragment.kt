@@ -27,10 +27,14 @@ class MissionKGFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
         activity?.initActionBar(activity as AppCompatActivity, "最新任务", false, rightBtn = "退出", rightClick = {
 
         })
-        initViews()
     }
 
     private fun initViews() {
@@ -48,7 +52,7 @@ class MissionKGFragment : BaseFragment() {
         fragments.add(ordersFragment2)
         titles.add("出库订单")
         titles.add("入库订单")
-        viewpager.adapter = MyPagerAdapter(fragmentManager, fragments, titles)
+        viewpager.adapter = MyPagerAdapter(childFragmentManager, fragments, titles)
         tabLayout.setupWithViewPager(viewpager)//此方法就是让tablayout和ViewPager联动
     }
 

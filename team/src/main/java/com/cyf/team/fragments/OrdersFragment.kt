@@ -119,12 +119,12 @@ class OrdersFragment : BaseFragment() {
                     inter = "orderslistsxj"
                     isLoadMore = false
                 }
-                GR_ORDER_OUT->{
+                GR_ORDER_OUT -> {
                     status = 3
                     inter = "orderslistsgr"
                     isLoadMore = false
                 }
-                GR_ORDER_IN->{
+                GR_ORDER_IN -> {
                     status = 8
                     inter = "orderslistsgr"
                     isLoadMore = false
@@ -136,8 +136,8 @@ class OrdersFragment : BaseFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         getCargoOrders(ordersSwipe.currPage, true)
     }
 
@@ -232,7 +232,7 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.receiverAddr.text = cargoOrder.address
                     holder.itemView.receiverContent.text = cargoOrder.contents
                 }
-                GR_ORDER_OUT->{
+                GR_ORDER_OUT -> {
                     holder.itemView.orderStatus.text = PS_STATUS[cargoOrder.ps_status]
                     holder.itemView.layoutAddr.visibility = View.VISIBLE
                     holder.itemView.receiverName.text = cargoOrder.title
@@ -240,7 +240,7 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.receiverAddr.text = cargoOrder.address
                     holder.itemView.receiverContent.text = cargoOrder.contents
                 }
-                GR_ORDER_IN->{
+                GR_ORDER_IN -> {
                     holder.itemView.orderStatus.text = PS_STATUS[cargoOrder.ps_status]
                     holder.itemView.layoutAddr.visibility = View.VISIBLE
                     holder.itemView.receiverName.text = cargoOrder.title
@@ -323,7 +323,7 @@ class OrdersFragment : BaseFragment() {
                     }
                     holder.itemView.layoutKC.visibility = View.GONE
                 }
-                GR_ORDER_OUT->{
+                GR_ORDER_OUT -> {
                     if (cargoDetails.ck_status == 0) {
                         holder.itemView.cargoStatus.text = "未出库"
                     } else {
@@ -331,7 +331,7 @@ class OrdersFragment : BaseFragment() {
                     }
                     holder.itemView.layoutKC.visibility = View.GONE
                 }
-                GR_ORDER_IN->{
+                GR_ORDER_IN -> {
                     if (cargoDetails.rk_status == 0) {
                         holder.itemView.cargoStatus.text = "未入库"
                     } else {

@@ -62,6 +62,12 @@ const val KUCUN_TYPE = "kucuntype"//产品分类
 
 const val KUCUN_LISTS = "kucunlists" //产品列表
 
+const val ACCDSH = "accdsh" //待审核用户信息列表
+
+const val XYSH = "xysh" //信用待审核列表
+
+const val ACCZLSET = "acczlset" //审核用户
+
 const val SENDMSG = "sendmsg" //发送短信验证码
 
 const val LOGINYG = "loginyg"//员工登陆

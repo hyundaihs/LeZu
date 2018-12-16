@@ -88,3 +88,63 @@ data class CargoKucun(val id: Int, val title: String, val file_url: String, val 
 
 data class CargoKucunListRes(val retRes: ArrayList<CargoKucun>) : RequestResult()
 
+/*[id] => 账号id
+[type_id] => 类型（1：个人，2：企业）
+[is_sjs] => 是否是设计师
+[account] => 账号
+[title] => 昵称
+[name] => 公司/个人名称
+[id_numbers] => 公司营业执照号码/个人身份证
+[id_file_url1] => 个人/法人身份证正面
+[id_file_url2] => 个人/法人身份证反面
+[link_man] => 联系人
+[link_phone] => 联系人电话
+[yyzz_file_url] => 营业执照照片
+[email] => 邮箱
+[fr_name] => 公司法人姓名
+[fr_link_phone] => 公司法人电话
+[company_title] => 公司名称
+[sex] => 性别
+[zl_status] => 资料审核状态（0,：未提交，1：审核中，2：通过，3：未通过）
+[zl_time] => 资料提交时间
+[zl_contents] => 资料备注*/
+data class UserInfo(val id: Int, val type_id: Int, val is_sjs: Int, val account: String, val title: String, val name: String, val id_numbers: String
+                    , val id_file_url1: String, val id_file_url2: String, val link_man: String, val link_phone: String, val yyzz_file_url: String, val email: String
+                    , val fr_name: String, val fr_link_phone: String, val company_title: String, val sex: String, val zl_status: Int, val zl_time: Long
+                    , val zl_contents: String)
+
+data class UserInfoListRes(val retRes: ArrayList<UserInfo>) : RequestResult()
+
+/*[file_url] => 图片地址
+[create_time] => 上传时间*/
+data class PhotoInfo(val file_url: String, val create_time: Long)
+
+/*[id] => 资料ID（设置分数用）
+[account_id] => 账号ID
+[score] => 当前得分
+[max] => 最高分数
+[title] => 资料名称（人民银行个人征信）
+[lists] => Array（图片列表）*/
+data class CompanyInfo(val id: Int, val account_id: String, val score: String, val max: String, val title: String, val lists: ArrayList<PhotoInfo>)
+
+/*[id] => 资料ID（设置分数用）
+[account_id] => 账号ID
+[score] => 当前得分
+[max] => 最高分数
+[title] => 资料名称（人民银行个人征信）
+[lists] => Array（图片列表）*/
+data class PersonalQual(val id: Int, val account_id: String, val score: String, val max: String, val title: String, val lists: ArrayList<PhotoInfo>)
+
+data class PersonalQualTemp(val id_title: Int, val id: Int, val account_id: String, val score: String, val max: String, val title: String, val file_url: String, val create_time: Long)
+
+/*[id] => 账号ID
+[title] => 昵称
+[account] => 账号
+[type_id] => 类型（1：个人，2：企业）
+[zl_time] => 资料上传时间
+[grLists] => Array（个人资质列表）
+[gsLists] => Array（公司资料列表）*/
+data class CreditInfo(val id: Int, val title: String, val account: String, val type_id: Int, val zl_time: Long, val grLists: ArrayList<PersonalQual>
+                      , val gsLists: ArrayList<PersonalQual>)
+
+data class CreditInfoListRes(val retRes: ArrayList<CreditInfo>) : RequestResult()

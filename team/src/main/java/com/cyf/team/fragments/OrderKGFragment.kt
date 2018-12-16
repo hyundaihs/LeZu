@@ -37,8 +37,13 @@ class OrderKGFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.initActionBar(activity as AppCompatActivity, "采购订单", false)
+
         initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.initActionBar(activity as AppCompatActivity, "采购订单", false)
     }
 
     private fun initViews() {
@@ -52,7 +57,7 @@ class OrderKGFragment : BaseFragment() {
             fragments.add(ordersFragment1)
             titles.add(TYPES[i])
         }
-        viewpagerOrder.adapter = MyPagerAdapter(fragmentManager, fragments, titles)
+        viewpagerOrder.adapter = MyPagerAdapter(childFragmentManager, fragments, titles)
         tabLayoutOrder.setupWithViewPager(viewpagerOrder)//此方法就是让tablayout和ViewPager联动
     }
 
