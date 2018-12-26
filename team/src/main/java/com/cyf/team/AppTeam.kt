@@ -6,6 +6,7 @@ import com.cyf.lezu.E
 import com.cyf.lezu.entity.APP_ID
 import com.cyf.lezu.entity.SystemInfo
 import com.cyf.lezu.entity.WorkerInfo
+import com.cyf.team.entity.CargoDetails
 import com.cyf.team.entity.CreditInfo
 import com.cyf.team.entity.UserInfo
 import com.tencent.mm.opensdk.openapi.IWXAPI
@@ -29,6 +30,7 @@ class AppTeam : Application() {
         var instance: AppTeam by Delegates.notNull()
         var creditInfo: CreditInfo by Delegates.notNull()
         var userInfo: UserInfo by Delegates.notNull()
+        var cargoDetails : CargoDetails by Delegates.notNull()
     }
 
     override fun onCreate() {

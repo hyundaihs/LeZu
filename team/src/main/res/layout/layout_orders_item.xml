@@ -47,14 +47,32 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/orderStatus"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/red_corner"
-                android:padding="5dp"
-                android:textColor="@color/text_FFFFFF"
-                android:textSize="15sp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/orderStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/red_corner"
+                    android:padding="5dp"
+                    android:textColor="@color/text_FFFFFF"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/sendWork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/green_corner"
+                    android:padding="5dp"
+                    android:text="安排工人"
+                    android:textColor="@color/text_FFFFFF"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -72,8 +90,8 @@
             android:id="@+id/layoutAddr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <View
                 android:layout_width="match_parent"
@@ -103,7 +121,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="风暴人"
                         android:textColor="@color/text_666666"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -125,7 +142,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="18571514990"
                         android:textColor="@color/text_666666"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -147,7 +163,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="范德萨规范的撒反攻倒算"
                         android:textColor="@color/text_666666"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -169,12 +184,33 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="风暴人讽德诵功反倒是噶水电费"
                         android:textColor="@color/text_666666"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutWorker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_DDDDDD" />
+
+            <TextView
+                android:id="@+id/hintText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="安排工人接单后才能看到"
+                android:textColor="@color/red_text"
+                android:textSize="15sp"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

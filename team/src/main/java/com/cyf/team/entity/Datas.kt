@@ -1,5 +1,8 @@
 package com.cyf.team.entity
 
+import android.annotation.SuppressLint
+import android.os.Parcel
+import android.os.Parcelable
 import com.cyf.lezu.entity.RequestResult
 
 /**
@@ -9,8 +12,11 @@ import com.cyf.lezu.entity.RequestResult
 
 /*[numbers] => 编号
 [num] => 库存数量
+[orders_type] => 订单类型（gm：购买，zl：租赁，cg：采购）
+[orders_id] => 订单id（可为空）
+[orders_info_id] => 订单详情id（可为空）
 [xinjiu] => 新旧程度*/
-data class CargoNum(val numbers: String, val num: Int, val xinjiu: String)
+data class CargoNum(var numbers: String, var num: String, var orders_type: String, var orders_id: String, var orders_info_id: String, var xinjiu: String)
 
 /*[id] => 订单详情id
 [num] => 数量
@@ -25,8 +31,8 @@ data class CargoNum(val numbers: String, val num: Int, val xinjiu: String)
 [rk_status] => 是否入库（0|1）
 [rk_time] => 入库时间（时间戳）
 [numbers_lists] => Array（出库编号）*/
-data class CargoDetails(val id: Int, val num: Int, val goods_title: String, val guige: String, val yanse: String, val xinghao: String, val kucunguige_id: String
-                        , val kucunguige_num: Int, val ck_status: Int, val ck_time: Long, val rk_status: Int, val rk_time: Long, val numbers_lists: ArrayList<CargoNum>)
+data class CargoDetails(val id: Int, val kucun_id: Int, val num: Int, val goods_title: String, val title: String, val guige: String, val yanse: String, val xinghao: String, val kucunguige_id: String
+                        , val kucunguige_num: Int, val ck_status: Int, val ck_time: Long, val rk_status: Int, val rk_time: Long, val file_url: String, val numbers_lists: ArrayList<CargoNum>)
 
 /*
 [id] => 订单id
@@ -57,11 +63,11 @@ data class CargoDetails(val id: Int, val num: Int, val goods_title: String, val 
 [hs_fp_time] => 回收分配时间戳
 [lists] => Array
 [type] => 订单类型（gm：购买，zl：租赁）*/
-data class CargoOrder(val id: Int, val numbers: String, val title: String, val phone: String, val pca: String, val address: String, val wl_title: String
+data class CargoOrder(val id: Int, val numbers: String, val title: String, val status: Int, val phone: String, val pca: String, val address: String, val wl_title: String
                       , val wl_numbers: String, val contents: String, val create_time: Long, val ck_status: Int, val ck_time: Long, val rk_status: Int
                       , val rk_time: Long, val ps_status: Int, val ps_contents: String, val ps_admin_id: Int, val ps_admin_phone: String, val ps_admin_title: String
                       , val ps_fp_time: Long, val hs_status: Int, val hs_admin_id: Int, val hs_admin_phone: String, val hs_admin_title: String, val hs_fp_time: Long
-                      , val lists: ArrayList<CargoDetails>, val type: String)
+                      , val lists: ArrayList<CargoDetails>, val type: String, val update_time: Long)
 
 data class CargoOrdersRes(val retRes: ArrayList<CargoOrder>) : RequestResult()
 
@@ -77,14 +83,19 @@ data class CargoTypeListRes(val retRes: ArrayList<CargoType>) : RequestResult()
 [yanse] => 颜色
 [xinghao] => 型号
 [num] => 库存数量
+[goods_title] => 产品名称（文件柜子）
+[goods_file_url] => 产品图片
 [numbers_lists] => Array(库存编号列表)*/
-data class CargoDetail(val id: Int, val title: String, val yanse: String, val xinghao: String, val num: Int, val numbers_lists: ArrayList<CargoNum>)
+data class CargoDetail(val id: Int, val title: String, val yanse: String, val xinghao: String, val num: Int, val goods_title: String, val goods_file_url: String,
+                       val numbers_lists: ArrayList<CargoNum>)
 
 /*[id] => 产品id
 [title] => 名称
 [file_url] =>
 [lists] => Array（规格列表）*/
 data class CargoKucun(val id: Int, val title: String, val file_url: String, val lists: ArrayList<CargoDetail>)
+
+data class CargoDetailRes(val retRes: CargoDetail) : RequestResult()
 
 data class CargoKucunListRes(val retRes: ArrayList<CargoKucun>) : RequestResult()
 
@@ -148,3 +159,17 @@ data class CreditInfo(val id: Int, val title: String, val account: String, val t
                       , val gsLists: ArrayList<PersonalQual>)
 
 data class CreditInfoListRes(val retRes: ArrayList<CreditInfo>) : RequestResult()
+
+/*[id] => 账号id
+[type_id] => 类型（7：巡检，8:工人）
+[account] => 账号
+[title] => 姓名
+[phone] => 电话
+[address] => 地址
+[lat] => 经度
+[lng] => 纬度
+[login_time] => 最近登录时间*/
+data class Worker(val id: Int, val type_id: Int, val account: String, val title: String, val phone: String, val address: String, val lat: Float,
+                  val lng: Float, val login_time: Long)
+
+data class WorkerListRes(val retRes: ArrayList<Worker>) : RequestResult()

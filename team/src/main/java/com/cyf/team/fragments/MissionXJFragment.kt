@@ -1,5 +1,6 @@
 package com.cyf.team.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -10,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.cyf.lezu.fragments.BaseFragment
 import com.cyf.lezu.initActionBar
+import com.cyf.lezu.utils.PreferenceUtil
+import com.cyf.team.AppTeam
+import com.cyf.team.MainActivity
 import com.cyf.team.OrderListType
 import com.cyf.team.R
 import kotlinx.android.synthetic.main.fragment_mission_kg.*
@@ -19,6 +23,10 @@ import kotlinx.android.synthetic.main.fragment_mission_kg.*
  * Created by ${蔡雨峰} on 2018/12/1/001.
  */
 class MissionXJFragment  : BaseFragment() {
+    var login_verf: String by PreferenceUtil(AppTeam.instance, PreferenceUtil.LOGIN_VERF, "")
+    var m_Account: String by PreferenceUtil(AppTeam.instance, PreferenceUtil.ACCOUNT, "")
+    var m_Password: String by PreferenceUtil(AppTeam.instance, PreferenceUtil.PASSWORD, "")
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_mission_xj, container, false)
     }
@@ -32,7 +40,11 @@ class MissionXJFragment  : BaseFragment() {
     override fun onResume() {
         super.onResume()
         activity?.initActionBar(activity as AppCompatActivity, "资料审核", false,rightBtn = "退出", rightClick = {
-
+            login_verf = ""
+            m_Account = ""
+            m_Password = ""
+            AppTeam.isLogged = false
+            startActivity(Intent(context, MainActivity::class.java))
         })
     }
 

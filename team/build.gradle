@@ -1,36 +1,51 @@
 apply plugin: 'com.android.application'
+
 apply plugin: 'kotlin-android'
+
 apply plugin: 'kotlin-android-extensions'
+
 android {
+    signingConfigs {
+        config {
+            keyAlias 'luzu'
+            keyPassword '558600'
+            storeFile file('E:/GitHub/LezuFiles/lezu_keystore.jks')
+            storePassword '558600'
+        }
+    }
     compileSdkVersion 27
-
-
-
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.cyf.team"
         minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        signingConfig signingConfigs.config
     }
-
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    sourceSets{
-        main{
-            jniLibs.srcDir 'libs'
-            //说明so的路径为该libs路径，关联所有地图SDK的so文件
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
+            pseudoLocalesEnabled true
+            proguardFile 'E:/AndroidStudioAll/AndroidStudioProjects/LeZu/team/proguard-rules.pro'
         }
     }
-
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            jni.srcDirs = []
+        }
+    }
 }
 
 dependencies {
