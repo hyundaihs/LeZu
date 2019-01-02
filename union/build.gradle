@@ -26,8 +26,14 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
+            pseudoLocalesEnabled true
+            proguardFile 'E:/AndroidStudioAll/AndroidStudioProjects/LeZu/union/proguard-rules.pro'
         }
         release {
             minifyEnabled true

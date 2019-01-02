@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Environment
 import com.cyf.lezu.D
+import com.cyf.lezu.entity.RequestResult
 import com.cyf.lezu.utils.MyProgressDialog
 import com.google.gson.Gson
 import okhttp3.*
@@ -107,7 +108,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                     val string = response.body()!!.string()
                     getSession(response)
                     val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
-                    D("requestResult = $string")
+                    D("解析结果 = $res")
                     if (res.retInt == 1) {
                         uiThread {
                             if (getProgress) {
@@ -150,65 +151,6 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
             }
         }
     }
-
-//    fun postRequest(context: Context, url: String, str: String) {
-//        var dialog: AlertDialog? = null
-//        if (getProgress) {
-//            dialog = MyProgressDialog(context)
-//        }
-//        D(url + "\n" + str)
-//        context.doAsync {
-//            val requestBody = RequestBody.create(MEDIA_TYPE_JSON, str)
-//            val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
-//            try {
-//                val response = mOkHttpClient.newCall(request).execute()
-//                if (response.isSuccessful) {
-//                    val string = response.body().string()
-//                    getSession(response)
-//                    val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
-//                    D("requestResult = $string")
-//                    if (res.retInt == 1) {
-//                        uiThread {
-//                            if (getProgress) {
-//                                dialog?.dismiss()
-//                            }
-//                            callback?.onSuccess(context, string)
-//                        }
-//                    } else {
-//                        if (res.retErr == LOGINERR) {
-//                            uiThread {
-//                                if (getProgress) {
-//                                    dialog?.dismiss()
-//                                }
-//                                callback?.onLoginErr(context)
-//                            }
-//                        } else {
-//                            uiThread {
-//                                if (getProgress) {
-//                                    dialog?.dismiss()
-//                                }
-//                                callback?.onError(context, res.retErr)
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    uiThread {
-//                        if (getProgress) {
-//                            dialog?.dismiss()
-//                        }
-//                        callback?.onError(context, response.message())
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                uiThread {
-//                    if (getProgress) {
-//                        dialog?.dismiss()
-//                    }
-//                    callback?.onError(context, e.toString())
-//                }
-//            }
-//        }
-//    }
 
     fun uploadFile(context: Context, url: String, files: ArrayList<String>) {
         var dialog: AlertDialog? = null
@@ -432,8 +374,8 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
 
 }
 
-open class RequestResult(val retInt: Int = 0, val retErr: String = "", val retUrl: String = "", val retCounts: Int = 0) {
-    override fun toString(): String {
-        return "RequestResult(retInt=$retInt, retErr='$retErr', retCounts=$retCounts)"
-    }
-}
+//open class RequestResult(val retInt: Int = 0, val retErr: String = "", val retUrl: String = "", val retCounts: Int = 0) {
+//    override fun toString(): String {
+//        return "RequestResult(retInt=$retInt, retErr='$retErr', retCounts=$retCounts)"
+//    }
+//}

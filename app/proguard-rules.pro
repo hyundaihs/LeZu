@@ -75,6 +75,10 @@
 -keep class com.cyf.lezu.entity.**{
 *;
 }
+-keep com.cyf.lezu.requests.**{
+*;
+}
+
 
 #okhttp
 -dontwarn okhttp3.**
