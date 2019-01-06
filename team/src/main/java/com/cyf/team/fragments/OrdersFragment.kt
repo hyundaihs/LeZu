@@ -39,6 +39,7 @@ import com.cyf.team.OrderListType.Companion.XJ_ORDER_IN
 import com.cyf.team.OrderListType.Companion.XJ_ORDER_OUT
 import com.cyf.team.R
 import com.cyf.team.activities.AddKucunActivity
+import com.cyf.team.activities.LocationActivity
 import com.cyf.team.activities.LoginActivity
 import com.cyf.team.activities.WorkerListActivity
 import com.cyf.team.entity.*
@@ -188,6 +189,7 @@ class OrdersFragment : BaseFragment() {
             val adapter = MyCargoAdapter(cargoOrder.lists)
             when (pageType) {
                 KG_MISSION_OUT -> {
+                    holder.itemView.layoutWorker.visibility = View.GONE
                     var isCG = false
                     for (i in 0 until cargoOrder.lists.size) {
                         val cargoDetails = cargoOrder.lists[i]
@@ -235,6 +237,7 @@ class OrdersFragment : BaseFragment() {
                     }
                 }
                 KG_MISSION_IN -> {
+                    holder.itemView.layoutWorker.visibility = View.GONE
                     holder.itemView.orderStatus.text = HS_STATUS[cargoOrder.hs_status]
                     adapter.myOnItemClickListener = object : MyOnItemClickListener {
                         override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
@@ -261,17 +264,17 @@ class OrdersFragment : BaseFragment() {
                         holder.itemView.sendWork.setOnClickListener {
                             //确认入库
                             var isRk = true
-                            for(i in 0 until cargoOrder.lists.size){
-                                if(cargoOrder.lists[i].rk_status == 0){
+                            for (i in 0 until cargoOrder.lists.size) {
+                                if (cargoOrder.lists[i].rk_status == 0) {
                                     isRk = false
                                 }
                             }
-                            if(isRk){
+                            if (isRk) {
                                 //入库
-                                activity?.CustomDialog("提示", "确定要发货吗？", positiveClicked = DialogInterface.OnClickListener { dialog, which ->
+                                activity?.CustomDialog("提示", "确定要入库吗？", positiveClicked = DialogInterface.OnClickListener { dialog, which ->
                                     sendGoods(cargoOrder.type, cargoOrder.id, 1)//1：入库，-1：出库
                                 }, negative = "取消")
-                            }else{
+                            } else {
                                 context?.toast("商品未全部入库")
                             }
                         }
@@ -283,28 +286,35 @@ class OrdersFragment : BaseFragment() {
                 KG_ORDER_ALL -> {
                     holder.itemView.orderStatus.visibility = View.GONE
                     holder.itemView.chTime.text = "备注：${cargoOrder.contents}"
+                    holder.itemView.layoutWorker.visibility = View.GONE
                 }
                 KG_ORDER_WAIT_CONFIRM -> {
                     holder.itemView.orderStatus.visibility = View.GONE
                     holder.itemView.chTime.text = "备注：${cargoOrder.contents}"
+                    holder.itemView.layoutWorker.visibility = View.GONE
                 }
                 KG_ORDER_CONFIRMED -> {
                     holder.itemView.orderStatus.visibility = View.GONE
                     holder.itemView.chTime.text = "备注：${cargoOrder.contents}"
+                    holder.itemView.layoutWorker.visibility = View.GONE
                 }
                 KG_ORDER_SEND -> {
                     holder.itemView.orderStatus.visibility = View.GONE
                     holder.itemView.chTime.text = "备注：${cargoOrder.contents}"
+                    holder.itemView.layoutWorker.visibility = View.GONE
                 }
                 KG_ORDER_CANCEL -> {
                     holder.itemView.orderStatus.visibility = View.GONE
                     holder.itemView.chTime.text = "备注：${cargoOrder.contents}"
+                    holder.itemView.layoutWorker.visibility = View.GONE
                 }
                 KG_ORDER_IN -> {
                     holder.itemView.orderStatus.visibility = View.GONE
                     holder.itemView.chTime.text = "备注：${cargoOrder.contents}"
+                    holder.itemView.layoutWorker.visibility = View.GONE
                 }
                 XJ_ORDER_OUT -> {
+                    holder.itemView.layoutWorker.visibility = View.VISIBLE
                     holder.itemView.orderStatus.text = PS_STATUS[cargoOrder.ps_status]
                     holder.itemView.layoutAddr.visibility = View.VISIBLE
                     holder.itemView.receiverName.text = cargoOrder.title
@@ -315,6 +325,7 @@ class OrdersFragment : BaseFragment() {
                         1 -> {
                             holder.itemView.hintText.text = "安排工人，并接单后才能看到工人信息"
                             holder.itemView.hintText.visibility = View.VISIBLE
+                            holder.itemView.layoutWorkerInfo.visibility = View.GONE
                             holder.itemView.sendWork.text = "安排工人"
                             holder.itemView.sendWork.visibility = View.VISIBLE
                             holder.itemView.sendWork.setOnClickListener {
@@ -337,6 +348,9 @@ class OrdersFragment : BaseFragment() {
                                         setSendStatus(cargoOrder.type, cargoOrder.id, 1, 3)//1:待配送,2：配送中，3：已送达，4：安装完成（已审核）
                                     }, negative = "取消")
                                 }
+                                holder.itemView.hintText.visibility = View.GONE
+                                holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
+
                             }
                         }
                         3 -> {
@@ -348,14 +362,26 @@ class OrdersFragment : BaseFragment() {
                                     setSendStatus(cargoOrder.type, cargoOrder.id, 1, 4)//1:待配送,2：配送中，3：已送达，4：安装完成（已审核）
                                 }, negative = "取消")
                             }
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
                         }
                         else -> {
                             holder.itemView.sendWork.visibility = View.GONE
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
                         }
+                    }
+                    holder.itemView.psNameTitle.text = "工人："
+                    holder.itemView.psName.text = cargoOrder.ps_admin_title
+                    holder.itemView.psPhone.text = cargoOrder.ps_admin_phone
+                    holder.itemView.checkLocal.setOnClickListener {
+                        //查看位置
+                        getLocal(cargoOrder.ps_admin_id)
                     }
 
                 }
                 XJ_ORDER_IN -> {
+                    holder.itemView.layoutWorker.visibility = View.VISIBLE
                     holder.itemView.orderStatus.text = HS_STATUS[cargoOrder.hs_status]
                     holder.itemView.layoutAddr.visibility = View.VISIBLE
                     holder.itemView.receiverName.text = cargoOrder.title
@@ -393,6 +419,7 @@ class OrdersFragment : BaseFragment() {
 
                 }
                 GR_ORDER_OUT -> {
+                    holder.itemView.layoutWorker.visibility = View.VISIBLE
                     holder.itemView.orderStatus.text = PS_STATUS[cargoOrder.ps_status]
                     holder.itemView.layoutAddr.visibility = View.VISIBLE
                     holder.itemView.receiverName.text = cargoOrder.title
@@ -401,6 +428,9 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.receiverContent.text = cargoOrder.contents
                     when (cargoOrder.ps_status) {
                         1 -> {
+                            holder.itemView.hintText.text = "接单后才能看到巡检信息"
+                            holder.itemView.hintText.visibility = View.VISIBLE
+                            holder.itemView.layoutWorkerInfo.visibility = View.GONE
                             holder.itemView.sendWork.text = "抢单"
                             holder.itemView.sendWork.visibility = View.VISIBLE
                             holder.itemView.sendWork.setOnClickListener {
@@ -409,6 +439,11 @@ class OrdersFragment : BaseFragment() {
                                     getOrder(cargoOrder.type, cargoOrder.id, 1)
                                 }, negative = "取消")
                             }
+                        }
+                        2 -> {
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
+
                         }
                         3 -> {
                             holder.itemView.sendWork.text = "安装"
@@ -419,13 +454,25 @@ class OrdersFragment : BaseFragment() {
                                     setSendStatus(cargoOrder.type, cargoOrder.id, 1, 4)//1:待配送,2：配送中，3：已送达，4：安装完成（已审核）
                                 }, negative = "取消")
                             }
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
                         }
                         else -> {
                             holder.itemView.sendWork.visibility = View.GONE
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
                         }
+                    }
+                    holder.itemView.psNameTitle.text = "巡检："
+                    holder.itemView.psName.text = cargoOrder.xj_admin_title
+                    holder.itemView.psPhone.text = cargoOrder.xj_admin_phone
+                    holder.itemView.checkLocal.setOnClickListener {
+                        //查看位置
+                        getLocal(cargoOrder.xj_admin_id)
                     }
                 }
                 GR_ORDER_IN -> {
+                    holder.itemView.layoutWorker.visibility = View.VISIBLE
                     holder.itemView.orderStatus.text = HS_STATUS[cargoOrder.hs_status]
                     holder.itemView.layoutAddr.visibility = View.VISIBLE
                     holder.itemView.receiverName.text = cargoOrder.title
@@ -688,5 +735,33 @@ class OrdersFragment : BaseFragment() {
             }
 
         }, false).postRequest(activity as Context, "setpsstats".getInterface(), map)
+    }
+
+    //设置配送和回收状态
+    private fun getLocal(id: Int) {
+        val map = mapOf(
+                Pair("admin_id", id.toString())
+        )
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val workerRes = Gson().fromJson(result, WorkerRes::class.java)
+                val intent = Intent(context, LocationActivity::class.java)
+                intent.putExtra("lat", workerRes.retRes.lat)
+                intent.putExtra("lng", workerRes.retRes.lng)
+                startActivity(intent)
+            }
+
+            override fun onError(context: Context, error: String) {
+                activity?.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                activity?.LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }, false).postRequest(activity as Context, "grjwd".getInterface(), map)
     }
 }

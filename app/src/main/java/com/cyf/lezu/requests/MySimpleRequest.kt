@@ -106,6 +106,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                 val response = mOkHttpClient.newCall(request).execute()
                 if (response.isSuccessful) {
                     val string = response.body()!!.string()
+                    D("原始返回 = $string")
                     getSession(response)
                     val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
                     D("解析结果 = $res")
@@ -138,7 +139,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                        callback?.onError(context, response.message())
+                        callback?.onError(context, "无响应：" + response.message())
                     }
                 }
             } catch (e: Exception) {
@@ -146,7 +147,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                    callback?.onError(context, e.toString())
+                    callback?.onError(context, "异常：" + e.toString())
                 }
             }
         }

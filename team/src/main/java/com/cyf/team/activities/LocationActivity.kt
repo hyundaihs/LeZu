@@ -29,7 +29,7 @@ class LocationActivity : MyBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
-        initActionBar(this as AppCompatActivity, "定位", false)
+        initActionBar(this as AppCompatActivity, "定位")
         val latitude = intent.getDoubleExtra("lat", 30.3333)
         val longitude = intent.getDoubleExtra("lng", 30.333)
         locMapView.map.isMyLocationEnabled = true

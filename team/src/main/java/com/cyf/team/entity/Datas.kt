@@ -61,12 +61,16 @@ data class CargoDetails(val id: Int, val kucun_id: Int, val num: Int, val goods_
 [hs_admin_phone] => 回收工人电话
 [hs_admin_title] => 回收工人名称
 [hs_fp_time] => 回收分配时间戳
+[xj_admin_id] => 巡检员ID
+[xj_admin_phone] => 巡检员电话
+[xj_admin_title] => 巡检员名称
 [lists] => Array
 [type] => 订单类型（gm：购买，zl：租赁）*/
 data class CargoOrder(val id: Int, val numbers: String, val title: String, val status: Int, val phone: String, val pca: String, val address: String, val wl_title: String
                       , val wl_numbers: String, val contents: String, val create_time: Long, val ck_status: Int, val ck_time: Long, val rk_status: Int
                       , val rk_time: Long, val ps_status: Int, val ps_contents: String, val ps_admin_id: Int, val ps_admin_phone: String, val ps_admin_title: String
                       , val ps_fp_time: Long, val hs_status: Int, val hs_admin_id: Int, val hs_admin_phone: String, val hs_admin_title: String, val hs_fp_time: Long
+                      , val xj_admin_id: Int, val xj_admin_phone: String, val xj_admin_title: String
                       , val lists: ArrayList<CargoDetails>, val type: String, val update_time: Long)
 
 data class CargoOrdersRes(val retRes: ArrayList<CargoOrder>) : RequestResult()
@@ -171,5 +175,7 @@ data class CreditInfoListRes(val retRes: ArrayList<CreditInfo>) : RequestResult(
 [login_time] => 最近登录时间*/
 data class Worker(val id: Int, val type_id: Int, val account: String, val title: String, val phone: String, val address: String, val lat: Float,
                   val lng: Float, val login_time: Long)
+
+data class WorkerRes(val retRes: Worker) : RequestResult()
 
 data class WorkerListRes(val retRes: ArrayList<Worker>) : RequestResult()

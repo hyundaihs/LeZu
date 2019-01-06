@@ -48,7 +48,7 @@ class AddKucunActivity : MyBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_kucun)
-        initActionBar(this, "出库设备", rightBtn = "确定", rightClick = {
+        initActionBar(this, if(isCK) "出库设备" else "入库设备", rightBtn = "确定", rightClick = {
             var isOk = true
             for (i in 0 until cargoNums.size) {
                 if (cargoNums[i].numbers == "") {
@@ -83,7 +83,16 @@ class AddKucunActivity : MyBaseActivity() {
         addKCNum.text = cargoDetails.num.toString()
         if (isCK) {
             for (i in 0 until cargoDetails.num) {
-                cargoNums.add(CargoNum("", "0", type, id.toString(), cargoDetails.id.toString(), "100"))
+                cargoNums.add(CargoNum("", "-1", type, id.toString(), cargoDetails.id.toString(), "100"))
+            }
+        }else{
+            for(i in 0 until cargoDetails.numbers_lists.size){
+                //.copy(orders_type = type,orders_id = id.toString(),orders_info_id =  cargoDetails.id.toString())
+                cargoNums.add(cargoDetails.numbers_lists[i])
+                cargoNums[i].orders_type = type
+                cargoNums[i].orders_id = id.toString()
+                cargoNums[i].orders_info_id = cargoDetails.id.toString()
+                cargoNums[i].num ="1"
             }
         }
         val adapter = MyAdapter(cargoNums)
@@ -106,7 +115,7 @@ class AddKucunActivity : MyBaseActivity() {
             override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
                 cargoNums[currindex].numbers = chooserNums[position].numbers
                 cargoNums[currindex].xinjiu = chooserNums[position].xinjiu
-                cargoNums[currindex].num = if (isCK) "-1" else "1"
+                //cargoNums[currindex].num = if (isCK) "-1" else "1"
                 cargoNums[currindex].orders_type = type
                 adapter.notifyDataSetChanged()
                 addKCNumList.visibility = View.GONE
@@ -190,7 +199,8 @@ class AddKucunActivity : MyBaseActivity() {
                 toast("操作成功")
                 finish()
             }
-
+//            "kucunguige_id":"16","contents":"","numbers_arr":[{"num":"1","numbers":"9000","xinjiu":"100"}
+//            ：{"contents":"正常入库","numbers_arr":[{"orders_info_id":"544","num":"1","xinjiu":"100","orders_type":"zl","numbers":"9000","orders_id":"279"}],"kucunguige_id":16}
             override fun onError(context: Context, error: String) {
                 toast(error)
             }
