@@ -18,6 +18,7 @@ import com.cyf.team.AppTeam
 import com.cyf.team.MainActivity
 import com.cyf.team.OrderListType
 import com.cyf.team.R
+import com.cyf.team.activities.HistoryOrderActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_mission_kg.*
 
@@ -48,6 +49,8 @@ class MissionKGFragment : BaseFragment() {
             m_Password = ""
             AppTeam.isLogged = false
             startActivity(Intent(context, MainActivity::class.java))
+        }, leftBtn = "历史记录", leftClick = {
+            startActivity(Intent(it.context, HistoryOrderActivity::class.java))
         })
     }
 

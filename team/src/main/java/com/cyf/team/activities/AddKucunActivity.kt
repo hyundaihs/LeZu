@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
 import android.view.View
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener
 import com.cyf.lezu.D
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.adapters.LineDecoration
@@ -48,7 +49,7 @@ class AddKucunActivity : MyBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_kucun)
-        initActionBar(this, if(isCK) "出库设备" else "入库设备", rightBtn = "确定", rightClick = {
+        initActionBar(this, if (isCK) "出库设备" else "入库设备", rightBtn = "确定", rightClick = {
             var isOk = true
             for (i in 0 until cargoNums.size) {
                 if (cargoNums[i].numbers == "") {
@@ -85,14 +86,14 @@ class AddKucunActivity : MyBaseActivity() {
             for (i in 0 until cargoDetails.num) {
                 cargoNums.add(CargoNum("", "-1", type, id.toString(), cargoDetails.id.toString(), "100"))
             }
-        }else{
-            for(i in 0 until cargoDetails.numbers_lists.size){
+        } else {
+            for (i in 0 until cargoDetails.numbers_lists.size) {
                 //.copy(orders_type = type,orders_id = id.toString(),orders_info_id =  cargoDetails.id.toString())
                 cargoNums.add(cargoDetails.numbers_lists[i])
                 cargoNums[i].orders_type = type
                 cargoNums[i].orders_id = id.toString()
                 cargoNums[i].orders_info_id = cargoDetails.id.toString()
-                cargoNums[i].num ="1"
+                cargoNums[i].num = "1"
             }
         }
         val adapter = MyAdapter(cargoNums)
@@ -123,6 +124,8 @@ class AddKucunActivity : MyBaseActivity() {
         }
     }
 
+    private val nums: List<Int> = listOf(100, 90, 80, 70, 60, 50, 40, 30, 20, 10)
+
     private inner class MyAdapter(val data: ArrayList<CargoNum>) : MyBaseAdapter(R.layout.layout_kucun_item) {
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             super.onBindViewHolder(holder, position)
@@ -140,9 +143,14 @@ class AddKucunActivity : MyBaseActivity() {
             }
             if (!isCK) {
                 holder.itemView.kcNumbers.isEnabled = false
-                holder.itemView.kcXinJ.isEnabled = false
                 holder.itemView.kcCheckNum.visibility = View.GONE
                 holder.itemView.kcCaigou.visibility = View.GONE
+            }
+            holder.itemView.kcXinJ.setOnClickListener {
+                PickerUtil.initChooseType(nums)
+                PickerUtil.showChooseType(it.context, "新旧度") { options1, options2, options3, v ->
+                    holder.itemView.kcXinJ.setText(nums[options1].toString())
+                }
             }
         }
 
@@ -199,7 +207,8 @@ class AddKucunActivity : MyBaseActivity() {
                 toast("操作成功")
                 finish()
             }
-//            "kucunguige_id":"16","contents":"","numbers_arr":[{"num":"1","numbers":"9000","xinjiu":"100"}
+
+            //            "kucunguige_id":"16","contents":"","numbers_arr":[{"num":"1","numbers":"9000","xinjiu":"100"}
 //            ：{"contents":"正常入库","numbers_arr":[{"orders_info_id":"544","num":"1","xinjiu":"100","orders_type":"zl","numbers":"9000","orders_id":"279"}],"kucunguige_id":16}
             override fun onError(context: Context, error: String) {
                 toast(error)

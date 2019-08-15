@@ -1,6 +1,7 @@
 package com.cyf.team
 
 import android.app.Application
+import cn.jpush.android.api.JPushInterface
 import com.baidu.mapapi.SDKInitializer
 import com.cyf.lezu.E
 import com.cyf.lezu.entity.APP_ID
@@ -36,6 +37,8 @@ class AppTeam : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        JPushInterface.setDebugMode(true)
+        JPushInterface.init(this)
         ZXingLibrary.initDisplayOpinion(this)
         SDKInitializer.initialize(applicationContext);
         if (api.registerApp(APP_ID)) {
@@ -60,6 +63,8 @@ class OrderListType {
         const val XJ_ORDER_IN = 9 //巡检-订单-入库
         const val GR_ORDER_OUT = 10 //巡检-订单-出库
         const val GR_ORDER_IN = 11 //巡检-订单-入库
+        const val KG_HISTORY_OUT = 12//库管-历史订单-出库
+        const val KG_HISTORY_IN = 13 //库管-历史订单-入库
     }
 }
 

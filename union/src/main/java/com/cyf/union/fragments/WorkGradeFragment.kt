@@ -19,6 +19,7 @@ import com.cyf.lezu.fragments.BaseFragment
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.utils.*
 import com.cyf.union.AppUnion
+import com.cyf.union.AppUnion.Companion.yhqqx
 import com.cyf.union.R
 import com.cyf.union.ShowImageDialog
 import com.cyf.union.activities.*
@@ -71,6 +72,7 @@ class WorkGradeFragment() : BaseFragment() {
             override fun onSuccess(context: Context, result: String) {
                 val workerDetailsRes = Gson().fromJson(result, WorkerDetailsRes::class.java)
                 workerDetails = workerDetailsRes.retRes
+                yhqqx = workerDetails.yhqqx
                 getWorkerGradeDetails()
                 initViews()
             }

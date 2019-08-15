@@ -7,6 +7,7 @@
     <include layout="@layout/layout_toolbar" />
 
     <TextView
+        android:id="@+id/youhuiTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/diyongTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"

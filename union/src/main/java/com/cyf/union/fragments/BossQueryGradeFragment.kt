@@ -24,6 +24,7 @@ import com.cyf.lezu.toast
 import com.cyf.lezu.utils.LoginErrDialog
 import com.cyf.union.AppUnion
 import com.cyf.union.AppUnion.Companion.workerList
+import com.cyf.union.AppUnion.Companion.yhqqx
 import com.cyf.union.R
 import com.cyf.union.activities.LoginActivity
 import com.cyf.union.activities.TiXianActivity
@@ -74,6 +75,7 @@ class BossQueryGradeFragment() : BaseFragment() {
             override fun onSuccess(context: Context, result: String) {
                 val storeInfoBossRes = Gson().fromJson(result, StoreInfoBossRes::class.java)
                 storeInfoBoss = storeInfoBossRes.retRes
+                yhqqx = storeInfoBoss.yhqqx
                 initViews()
             }
 

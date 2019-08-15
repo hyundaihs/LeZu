@@ -27,6 +27,8 @@ import com.cyf.lezu.widget.SwipeRefreshAndLoadLayout
 import com.cyf.team.AppTeam
 import com.cyf.team.OrderListType.Companion.GR_ORDER_IN
 import com.cyf.team.OrderListType.Companion.GR_ORDER_OUT
+import com.cyf.team.OrderListType.Companion.KG_HISTORY_IN
+import com.cyf.team.OrderListType.Companion.KG_HISTORY_OUT
 import com.cyf.team.OrderListType.Companion.KG_MISSION_IN
 import com.cyf.team.OrderListType.Companion.KG_MISSION_OUT
 import com.cyf.team.OrderListType.Companion.KG_ORDER_ALL
@@ -48,6 +50,9 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_orders.*
 import kotlinx.android.synthetic.main.layout_orders_item.view.*
 import kotlinx.android.synthetic.main.layout_orders_item_cargos.view.*
+import android.R.attr.phoneNumber
+import android.net.Uri
+
 
 /**
  * ChaYin
@@ -83,6 +88,16 @@ class OrdersFragment : BaseFragment() {
                 }
                 KG_MISSION_IN -> {
                     status = 8
+                    inter = "orderslists"
+                    isLoadMore = false
+                }
+                KG_HISTORY_OUT -> {
+                    status = -1
+                    inter = "orderslists"
+                    isLoadMore = false
+                }
+                KG_HISTORY_IN -> {
+                    status = -1
                     inter = "orderslists"
                     isLoadMore = false
                 }
@@ -188,7 +203,7 @@ class OrdersFragment : BaseFragment() {
             holder.itemView.chTime.text = "更新时间：${CalendarUtil(cargoOrder.update_time, true).format(CalendarUtil.STANDARD)}"
             val adapter = MyCargoAdapter(cargoOrder.lists)
             when (pageType) {
-                KG_MISSION_OUT -> {
+                KG_MISSION_OUT, KG_HISTORY_OUT -> {
                     holder.itemView.layoutWorker.visibility = View.GONE
                     var isCG = false
                     for (i in 0 until cargoOrder.lists.size) {
@@ -236,7 +251,7 @@ class OrdersFragment : BaseFragment() {
                         }
                     }
                 }
-                KG_MISSION_IN -> {
+                KG_MISSION_IN, KG_HISTORY_IN -> {
                     holder.itemView.layoutWorker.visibility = View.GONE
                     holder.itemView.orderStatus.text = HS_STATUS[cargoOrder.hs_status]
                     adapter.myOnItemClickListener = object : MyOnItemClickListener {
@@ -374,6 +389,9 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.psNameTitle.text = "工人："
                     holder.itemView.psName.text = cargoOrder.ps_admin_title
                     holder.itemView.psPhone.text = cargoOrder.ps_admin_phone
+                    holder.itemView.psPhone.setOnClickListener {
+                        callPhone(cargoOrder.ps_admin_phone)
+                    }
                     holder.itemView.checkLocal.setOnClickListener {
                         //查看位置
                         getLocal(cargoOrder.ps_admin_id)
@@ -466,6 +484,9 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.psNameTitle.text = "巡检："
                     holder.itemView.psName.text = cargoOrder.xj_admin_title
                     holder.itemView.psPhone.text = cargoOrder.xj_admin_phone
+                    holder.itemView.psPhone.setOnClickListener {
+                        callPhone(cargoOrder.xj_admin_phone)
+                    }
                     holder.itemView.checkLocal.setOnClickListener {
                         //查看位置
                         getLocal(cargoOrder.xj_admin_id)
@@ -510,6 +531,11 @@ class OrdersFragment : BaseFragment() {
         override fun getItemCount(): Int = data.size
     }
 
+    private fun callPhone(phoneNumber: String) {
+        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))//跳转到拨号界面，同时传递电话号码
+        startActivity(dialIntent)
+    }
+
     private inner class MyCargoAdapter(val data: ArrayList<CargoDetails>) : MyBaseAdapter(R.layout.layout_orders_item_cargos) {
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             super.onBindViewHolder(holder, position)
@@ -519,7 +545,7 @@ class OrdersFragment : BaseFragment() {
             holder.itemView.cargoType.text = cargoDetails.guige
             holder.itemView.cargoModel.text = cargoDetails.xinghao
             when (pageType) {
-                KG_MISSION_OUT -> {
+                KG_MISSION_OUT, KG_HISTORY_OUT -> {
                     if (cargoDetails.ck_status == 0) {
                         holder.itemView.cargoStatus.text = "未出库"
                     } else {
@@ -529,7 +555,7 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.cargoNum.text = cargoDetails.num.toString()
                     holder.itemView.kcNum.text = cargoDetails.kucunguige_num.toString()
                 }
-                KG_MISSION_IN -> {
+                KG_MISSION_IN, KG_HISTORY_IN -> {
                     if (cargoDetails.rk_status == 0) {
                         holder.itemView.cargoStatus.text = "未入库"
                     } else {
@@ -628,6 +654,8 @@ class OrdersFragment : BaseFragment() {
                 , Pair("page", page.toString())
                 , Pair("ps_status", "0")
                 , Pair("hs_status", "0")
+                , Pair("rk_status", if (status == -1) "1" else "0")
+                , Pair("ck_status", if (status == -1) "1" else "0")
         )
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {

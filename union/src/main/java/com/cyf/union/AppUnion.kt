@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.widget.ImageView
+import cn.jpush.android.api.JPushInterface
 import com.cyf.lezu.E
 import com.cyf.lezu.entity.APP_ID
 import com.cyf.lezu.entity.SystemInfo
@@ -32,12 +33,15 @@ class AppUnion : Application() {
         lateinit var systemInfo: SystemInfo //系统信息
         var instance: AppUnion by Delegates.notNull()
         var workerList = ArrayList<WorkerInfo>()
+        var yhqqx: Int = 0
         var edu: Int = 0
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        JPushInterface.setDebugMode(true)
+        JPushInterface.init(this)
         ZXingLibrary.initDisplayOpinion(this)
         if (api.registerApp(APP_ID)) {
             E("注册微信成功")
@@ -58,3 +62,5 @@ fun Context.ShowImageDialog(url: String) {
 enum class UserID {
     WORKER, BOSS
 }
+
+

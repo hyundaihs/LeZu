@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.cyf.lezu.fragments.BaseFragment
 import com.cyf.lezu.initActionBar
+import com.cyf.union.AppUnion
 import com.cyf.union.R
 import com.cyf.union.activities.FaQuanActivity
 import com.cyf.union.activities.FaQuanLogActivity
@@ -36,6 +37,32 @@ class FaQuanFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
+        when(AppUnion.yhqqx){
+            0->{
+                youhuiTitle.visibility = View.GONE
+                fragment_faquan_youhui.visibility = View.GONE
+                diyongTitle.visibility = View.GONE
+                fragment_faquan_diyong.visibility = View.GONE
+            }
+            1->{
+                youhuiTitle.visibility = View.VISIBLE
+                fragment_faquan_youhui.visibility = View.VISIBLE
+                diyongTitle.visibility = View.GONE
+                fragment_faquan_diyong.visibility = View.GONE
+            }
+            2->{
+                youhuiTitle.visibility = View.GONE
+                fragment_faquan_youhui.visibility = View.GONE
+                diyongTitle.visibility = View.VISIBLE
+                fragment_faquan_diyong.visibility = View.VISIBLE
+            }
+            else->{
+                youhuiTitle.visibility = View.VISIBLE
+                fragment_faquan_youhui.visibility = View.VISIBLE
+                diyongTitle.visibility = View.VISIBLE
+                fragment_faquan_diyong.visibility = View.VISIBLE
+            }
+        }
         val adapterYH = ArrayAdapter<Int>(activity, R.layout.fragment_faquan_list_item, R.id.fragment_faquan_list_item_text, dataYH)
         val adapterDY = ArrayAdapter<Int>(activity, R.layout.fragment_faquan_list_item, R.id.fragment_faquan_list_item_text, dataDY)
         fragment_faquan_youhui.adapter = adapterYH

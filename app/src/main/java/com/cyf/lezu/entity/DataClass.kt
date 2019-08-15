@@ -47,7 +47,7 @@ syyhq => 剩余优惠券额度
  */
 data class StoreInfoBoss(val id: Int, val account: String, val ye_price: Double, val ewm_file_url: String,
                          val login_time: Long, val file_url: String, val title: String, val hpl: Int, val address: String,
-                         val app_contents: String, val yhqff: Double, val syyhq: Double)
+                         val app_contents: String, val yhqff: Double, val syyhq: Double, val yhqqx: Int)
 
 data class StoreInfoBossRes(val retRes: StoreInfoBoss) : RequestResult()
 
@@ -111,7 +111,7 @@ syyhq => 剩余优惠券额度
  */
 data class WorkerDetails(val id: Int, val title: String, val zt_id: Int, val account: String, val ye_price: Double,
                          val ewm_file_url: String, val login_time: Long, val file_url: String, val yffjx: Double,
-                         val syyhq: Double)
+                         val syyhq: Double, val yhqqx: Int)
 
 data class WorkerDetailsRes(val retRes: WorkerDetails) : RequestResult()
 

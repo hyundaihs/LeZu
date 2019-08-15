@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:hint="请输入新旧程度（百分比）"
             android:inputType="number"
+            android:focusable="false"
             android:textColor="@color/text_333333"
             android:textSize="14sp" />
 
