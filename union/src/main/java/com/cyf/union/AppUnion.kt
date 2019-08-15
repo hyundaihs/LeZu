@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.widget.ImageView
-import cn.jpush.android.api.JPushInterface
 import com.cyf.lezu.E
 import com.cyf.lezu.entity.APP_ID
 import com.cyf.lezu.entity.SystemInfo
@@ -40,8 +39,6 @@ class AppUnion : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        JPushInterface.setDebugMode(true)
-        JPushInterface.init(this)
         ZXingLibrary.initDisplayOpinion(this)
         if (api.registerApp(APP_ID)) {
             E("注册微信成功")
