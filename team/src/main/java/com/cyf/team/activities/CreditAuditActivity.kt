@@ -79,11 +79,11 @@ class CreditAuditActivity : MyBaseActivity() {
         for (i in 0 until data.size) {
             val p = data[i]
             if (p.lists.size <= 0) {
-                val per = PersonalQualTemp(i + 101, p.id, p.account_id, p.score, p.max, p.title, "", 0)
+                val per = PersonalQualTemp(i + 1, p.id, p.account_id, p.score, p.max, p.title, "", 0)
                 personalQuals.add(per)
             } else {
                 for (j in 0 until p.lists.size) {
-                    val per = PersonalQualTemp(i + 101, p.id, p.account_id, p.score, p.max, p.title, p.lists[j].file_url, p.lists[j].create_time)
+                    val per = PersonalQualTemp(i + 1, p.id, p.account_id, p.score, p.max, p.title, p.lists[j].file_url, p.lists[j].create_time)
                     personalQuals.add(per)
                 }
             }
@@ -141,7 +141,7 @@ class CreditAuditActivity : MyBaseActivity() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val personalQual = getItem(position)
             if (personalQual.file_url != "") {
-                Picasso.with(holder.itemView.context).load(IMAGE_URL + personalQual.file_url).into(holder.itemView.scoreImage)
+                Picasso.with(holder.itemView.context).load(IMAGE_URL + personalQual.file_url).resize(800,800).into(holder.itemView.scoreImage)
                 holder.itemView.scoreTime.text = CalendarUtil(personalQual.create_time, true).format(CalendarUtil.STANDARD)
             }
         }
