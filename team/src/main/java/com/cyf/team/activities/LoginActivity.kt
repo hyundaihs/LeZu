@@ -42,8 +42,8 @@ class LoginActivity : MyBaseActivity() {
         login_KGBtn.setOnClickListener { onClick(it) }
         login_XJBtn.setOnClickListener { onClick(it) }
         login_GRBtn.setOnClickListener { onClick(it) }
-        forgetPsdBtn.setOnClickListener { onClick(it) }
-        register.setOnClickListener { onClick(it) }
+//        forgetPsdBtn.setOnClickListener { onClick(it) }
+//        register.setOnClickListener { onClick(it) }
         login_account.setText(m_Account)
         login_password.setText(m_Password)
     }
@@ -53,8 +53,8 @@ class LoginActivity : MyBaseActivity() {
             R.id.login_KGBtn -> actionLogin(UserID.KU_GUAN)
             R.id.login_XJBtn -> actionLogin(UserID.XUN_JIAN)
             R.id.login_GRBtn -> actionLogin(UserID.GONG_REN)
-            R.id.forgetPsdBtn -> forgetPsd()
-            R.id.register -> regist()
+//            R.id.forgetPsdBtn -> forgetPsd()
+//            R.id.register -> regist()
         }
     }
 

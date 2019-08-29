@@ -8,6 +8,7 @@ import com.cyf.lezu.toast
 import com.cyf.lezu.utils.AppPath
 import com.cyf.lezu.utils.CustomDialog
 import com.cyf.team.activities.LoginActivity
+import com.cyf.team.activities.WebActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
@@ -24,18 +25,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         introduce.setOnClickListener {
-            ////            val intent = Intent(this, WebActivity::class.java)
-////            intent.putExtra("type", 2)
-////            intent.putExtra("html", LeZuInfoUrl)
-////            intent.putExtra("pageName", "平台介绍")
-////            startActivity(intent)
+            val intent = Intent(this, WebActivity::class.java)
+            intent.putExtra("type", 2)
+            intent.putExtra("html", "http://www.lovelezu.com/index.php?s=/Info/index.html")
+            intent.putExtra("pageName", "平台介绍")
+            startActivity(intent)
         }
         newsInfo.setOnClickListener {
-            ////            val intent = Intent(this, WebActivity::class.java)
-////            intent.putExtra("type", 2)
-////            intent.putExtra("html", LeZuInfoUrl)
-////            intent.putExtra("pageName", "新闻资讯")
-////            startActivity(intent)
+            val intent = Intent(this, WebActivity::class.java)
+            intent.putExtra("type", 2)
+            intent.putExtra("html", "http://www.lovelezu.com/index.php?s=/News/index.html")
+            intent.putExtra("pageName", "新闻资讯")
+            startActivity(intent)
         }
         version.setOnClickListener {
             checkVersion()

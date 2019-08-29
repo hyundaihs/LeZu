@@ -121,5 +121,6 @@ const val FFJX = "ffjx" //店铺发放绩效给员工
 const val XGJX = "xgjx" //修改订单绩效金额
 
 const val CACCOUNT = "caccount" //更换员工手机号码（店铺）
+const val SETSCORE = "setscore" //巡检设置信用得分
 
 

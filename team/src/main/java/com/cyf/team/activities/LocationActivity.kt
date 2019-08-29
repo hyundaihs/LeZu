@@ -17,6 +17,13 @@ import com.cyf.lezu.initActionBar
 import com.cyf.team.R
 import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.fragment_location.*
+import com.baidu.mapapi.map.MarkerOptions
+import com.baidu.mapapi.map.OverlayOptions
+import com.baidu.mapapi.map.BitmapDescriptorFactory
+import com.baidu.mapapi.map.BitmapDescriptor
+import com.baidu.mapapi.map.BaiduMap
+import com.cyf.lezu.toast
+
 
 /**
  * ChaYin

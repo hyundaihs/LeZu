@@ -179,6 +179,7 @@
                 <category android:name="com.cyf.union" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.WebActivity" />
 
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 这个Service要继承JCommonService -->

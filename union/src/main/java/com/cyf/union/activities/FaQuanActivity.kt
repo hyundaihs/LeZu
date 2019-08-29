@@ -13,8 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.adapters.LineDecoration
+import com.cyf.lezu.entity.StoreInfoBossRes
 import com.cyf.lezu.entity.VipInfo
 import com.cyf.lezu.entity.VipListRes
+import com.cyf.lezu.entity.WorkerDetailsRes
 import com.cyf.lezu.initActionBar
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.toast
@@ -73,9 +75,14 @@ class FaQuanActivity : MyBaseActivity() {
             checkIds.add(checkedInfo[i].id)
         }
         val map = mapOf(Pair("type_id", type.toString()), Pair("num", faquan_count.text.toString()),
-                Pair("price", price.toString()), Pair("yxq", faquan_count.text.toString()), Pair("ids", Gson().toJson(checkIds)))
+                Pair("price", price.toString()), Pair("yxq", faquan_count.text.toString()), Pair("ids", checkIds))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
+                if(AppUnion.logier_id == UserID.WORKER){
+                    getWorkerDetails()
+                }else{
+                    getStoreInfo()
+                }
                 CustomDialog(message = "发送成功", positiveClicked = android.content.DialogInterface.OnClickListener { dialog, which ->
                     finish()
                 })
@@ -87,7 +94,7 @@ class FaQuanActivity : MyBaseActivity() {
 
             override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
-                    val intent = Intent(this@FaQuanActivity, LoginActivity::class.java)
+                    val intent = Intent(context, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
@@ -136,7 +143,7 @@ class FaQuanActivity : MyBaseActivity() {
 
             override fun onLoginErr(context: Context) {
                 LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
-                    val intent = Intent(this@FaQuanActivity, LoginActivity::class.java)
+                    val intent = Intent(context, LoginActivity::class.java)
                     startActivity(intent)
                 })
             }
@@ -187,6 +194,7 @@ class FaQuanActivity : MyBaseActivity() {
                     deleteCheck(vipInfo)
                 }
             }
+            holder.itemView.faquan_list_item_check.isChecked = checks.contains(vipInfo)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -197,4 +205,56 @@ class FaQuanActivity : MyBaseActivity() {
 
         class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     }
+
+    /**
+     * 获取店铺信息
+     */
+    private fun getStoreInfo() {
+        val map = mapOf(Pair("", ""))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val storeInfoBossRes = Gson().fromJson(result, StoreInfoBossRes::class.java)
+                val storeInfoBoss = storeInfoBossRes.retRes
+                AppUnion.yhqqx = storeInfoBoss.yhqqx
+                AppUnion.edu = storeInfoBoss.syyhq.toInt()
+            }
+
+            override fun onError(context: Context, error: String) {
+                toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }, false).postRequest(this, ZT_INFO.getInterface(), map)
+    }
+
+    private fun getWorkerDetails() {
+        val map = mapOf(Pair("", ""))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val workerDetailsRes = Gson().fromJson(result, WorkerDetailsRes::class.java)
+                val workerDetails = workerDetailsRes.retRes
+                AppUnion.yhqqx = workerDetails.yhqqx
+                AppUnion.edu = workerDetails.syyhq.toInt()
+            }
+
+            override fun onError(context: Context, error: String) {
+                toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                LoginErrDialog(DialogInterface.OnClickListener { dialog, which ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }, false).postRequest(this, YGINFO.getInterface(), map)
+    }
+
 }

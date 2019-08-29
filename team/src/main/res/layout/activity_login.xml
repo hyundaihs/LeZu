@@ -98,49 +98,49 @@
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:orientation="horizontal">-->
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                <!--<View-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1" />-->
 
-                <TextView
-                    android:id="@+id/forgetPsdBtn"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@mipmap/smbleft"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/forgetPsd"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/forgetPsdBtn"-->
+                    <!--style="?android:textAppearanceSmall"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@mipmap/smbleft"-->
+                    <!--android:gravity="center"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:text="@string/forgetPsd"-->
+                    <!--android:textStyle="bold" />-->
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                <!--<View-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1" />-->
 
-                <TextView
-                    android:id="@+id/register"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@mipmap/smbright"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/helpInfo"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/register"-->
+                    <!--style="?android:textAppearanceSmall"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@mipmap/smbright"-->
+                    <!--android:gravity="center"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:text="@string/helpInfo"-->
+                    <!--android:textStyle="bold" />-->
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
+                <!--<View-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1" />-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

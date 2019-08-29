@@ -78,8 +78,8 @@ class WorkerListActivity : MyBaseActivity() {
             holder.itemView.workerItemLoginTime.text = CalendarUtil(worker.login_time, true).format(CalendarUtil.STANDARD)
             holder.itemView.workerItemLocalBtn.setOnClickListener {
                 val intent = Intent(it.context, LocationActivity::class.java)
-                intent.putExtra("lat", worker.lat)
-                intent.putExtra("lng", worker.lng)
+                intent.putExtra("lat", worker.lat.toDouble())
+                intent.putExtra("lng", worker.lng.toDouble())
                 startActivity(intent)
             }
         }

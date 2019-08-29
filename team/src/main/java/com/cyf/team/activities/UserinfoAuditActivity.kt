@@ -79,7 +79,8 @@ class UserinfoAuditActivity : MyBaseActivity() {
         )
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
-
+                toast("操作成功")
+                finish()
             }
 
             override fun onError(context: Context, error: String) {
