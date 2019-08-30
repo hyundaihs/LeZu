@@ -363,10 +363,10 @@ class OrdersFragment : BaseFragment() {
                                         setSendStatus(cargoOrder.type, cargoOrder.id, 1, 3)//1:待配送,2：配送中，3：已送达，4：安装完成（已审核）
                                     }, negative = "取消")
                                 }
-                                holder.itemView.hintText.visibility = View.GONE
-                                holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
-
                             }
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
+                            context?.toast("显示工人信息")
                         }
                         3 -> {
                             holder.itemView.sendWork.text = "安装"
@@ -408,8 +408,11 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.receiverContent.text = cargoOrder.contents
                     when (cargoOrder.hs_status) {
                         1 -> {
+                            holder.itemView.hintText.text = "安排工人，并接单后才能看到工人信息"
+                            holder.itemView.hintText.visibility = View.VISIBLE
                             holder.itemView.sendWork.visibility = View.VISIBLE
                             holder.itemView.sendWork.text = "安排工人"
+                            holder.itemView.layoutWorkerInfo.visibility = View.GONE
                             holder.itemView.sendWork.setOnClickListener {
                                 //安排工人    工人巡检列表
                                 val intent = Intent(activity, WorkerListActivity::class.java)
@@ -429,10 +432,24 @@ class OrdersFragment : BaseFragment() {
                                     setSendStatus(cargoOrder.type, cargoOrder.id, 2, 3)//1:待配送,2：配送中，3：已送达，4：安装完成（已审核）
                                 }, negative = "取消")
                             }
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
                         }
                         else -> {
                             holder.itemView.sendWork.visibility = View.GONE
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
                         }
+                    }
+                    holder.itemView.psNameTitle.text = "工人："
+                    holder.itemView.psName.text = cargoOrder.hs_admin_title
+                    holder.itemView.psPhone.text = cargoOrder.hs_admin_phone
+                    holder.itemView.psPhone.setOnClickListener {
+                        callPhone(cargoOrder.hs_admin_phone)
+                    }
+                    holder.itemView.checkLocal.setOnClickListener {
+                        //查看位置
+                        getLocal(cargoOrder.hs_admin_id)
                     }
 
                 }
@@ -502,6 +519,9 @@ class OrdersFragment : BaseFragment() {
                     holder.itemView.receiverContent.text = cargoOrder.contents
                     when (cargoOrder.hs_status) {
                         1 -> {
+                            holder.itemView.hintText.text = "接单后才能看到巡检信息"
+                            holder.itemView.hintText.visibility = View.VISIBLE
+                            holder.itemView.layoutWorkerInfo.visibility = View.GONE
                             holder.itemView.sendWork.visibility = View.VISIBLE
                             holder.itemView.sendWork.text = "抢单"
                             holder.itemView.sendWork.setOnClickListener {
@@ -513,7 +533,19 @@ class OrdersFragment : BaseFragment() {
                         }
                         else -> {
                             holder.itemView.sendWork.visibility = View.GONE
+                            holder.itemView.hintText.visibility = View.GONE
+                            holder.itemView.layoutWorkerInfo.visibility = View.VISIBLE
                         }
+                    }
+                    holder.itemView.psNameTitle.text = "巡检："
+                    holder.itemView.psName.text = cargoOrder.xj_admin_title
+                    holder.itemView.psPhone.text = cargoOrder.xj_admin_phone
+                    holder.itemView.psPhone.setOnClickListener {
+                        callPhone(cargoOrder.xj_admin_phone)
+                    }
+                    holder.itemView.checkLocal.setOnClickListener {
+                        //查看位置
+                        getLocal(cargoOrder.xj_admin_id)
                     }
                 }
             }
@@ -774,8 +806,8 @@ class OrdersFragment : BaseFragment() {
             override fun onSuccess(context: Context, result: String) {
                 val workerRes = Gson().fromJson(result, WorkerRes::class.java)
                 val intent = Intent(context, LocationActivity::class.java)
-                intent.putExtra("lat", workerRes.retRes.lat)
-                intent.putExtra("lng", workerRes.retRes.lng)
+                intent.putExtra("lat", workerRes.retRes.lat.toDouble())
+                intent.putExtra("lng", workerRes.retRes.lng.toDouble())
                 startActivity(intent)
             }
 

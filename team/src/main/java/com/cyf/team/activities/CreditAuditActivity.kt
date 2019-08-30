@@ -42,7 +42,7 @@ class CreditAuditActivity : MyBaseActivity() {
     private val personalQuals = ArrayList<PersonalQualTemp>()
     private var adapter = AnimalsHeadersAdapter()
     private var headersDecor: StickyRecyclerHeadersDecoration? = null
-    private val scores = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    private val scores = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,7 +141,7 @@ class CreditAuditActivity : MyBaseActivity() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val personalQual = getItem(position)
             if (personalQual.file_url != "") {
-                Picasso.with(holder.itemView.context).load(IMAGE_URL + personalQual.file_url).resize(800,800).into(holder.itemView.scoreImage)
+                Picasso.with(holder.itemView.context).load(IMAGE_URL + personalQual.file_url).resize(800, 800).into(holder.itemView.scoreImage)
                 holder.itemView.scoreTime.text = CalendarUtil(personalQual.create_time, true).format(CalendarUtil.STANDARD)
             }
         }
