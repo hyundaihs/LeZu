@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import cn.jpush.android.api.JPushInterface
+import com.cyf.lezu.D
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.entity.LoginInfoRes
 import com.cyf.lezu.initActionBar
@@ -76,7 +78,7 @@ class LoginActivity : MyBaseActivity() {
         val map = mapOf(Pair("account", login_account.text.toString())
                 , Pair("password", login_password.text.toString())
                 , Pair("type_id", id.toString())
-                //,Pair("jpush_id", password.text.toString())
+                ,Pair("jpush_id", AppTeam.jpush_id)
         )
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
@@ -92,7 +94,7 @@ class LoginActivity : MyBaseActivity() {
 
             override fun onError(context: Context, error: String) {
                 loadLayout.isRefreshing = false
-                toast("登陆失败" + error)
+                toast("登陆失败$error")
             }
 
             override fun onLoginErr(context: Context) {
