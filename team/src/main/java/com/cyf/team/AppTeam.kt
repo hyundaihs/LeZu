@@ -32,7 +32,6 @@ class AppTeam : Application() {
         var creditInfo: CreditInfo by Delegates.notNull()
         var userInfo: UserInfo by Delegates.notNull()
         var cargoDetails : CargoDetails by Delegates.notNull()
-        var jpush_id = ""
     }
 
     override fun onCreate() {
@@ -40,7 +39,6 @@ class AppTeam : Application() {
         instance = this
         JPushInterface.setDebugMode(true)
         JPushInterface.init(this)
-        jpush_id = JPushInterface.getRegistrationID(this)
         ZXingLibrary.initDisplayOpinion(this)
         SDKInitializer.initialize(applicationContext);
         if (api.registerApp(APP_ID)) {

@@ -78,8 +78,9 @@ class LoginActivity : MyBaseActivity() {
         val map = mapOf(Pair("account", login_account.text.toString())
                 , Pair("password", login_password.text.toString())
                 , Pair("type_id", id.toString())
-                ,Pair("jpush_id", AppTeam.jpush_id)
+                ,Pair("jpush_id", JPushInterface.getRegistrationID(this))
         )
+        toast(JPushInterface.getRegistrationID(this))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 loadLayout.isRefreshing = false
