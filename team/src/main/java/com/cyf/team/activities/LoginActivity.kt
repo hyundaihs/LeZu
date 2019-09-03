@@ -80,7 +80,6 @@ class LoginActivity : MyBaseActivity() {
                 , Pair("type_id", id.toString())
                 ,Pair("jpush_id", JPushInterface.getRegistrationID(this))
         )
-        toast(JPushInterface.getRegistrationID(this))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 loadLayout.isRefreshing = false
