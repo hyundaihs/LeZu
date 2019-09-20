@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener
 import com.cyf.lezu.D
@@ -72,10 +74,6 @@ class AddKucunActivity : MyBaseActivity() {
     }
 
     private fun initViews() {
-        if (!isCK) {
-            addKCContents.isEnabled = false
-        }
-
         fileUrl = cargoDetails.file_url
         addKCName.text = if (cargoDetails.goods_title == null || cargoDetails.goods_title.isEmpty()) cargoDetails.title else cargoDetails.goods_title
         addKCColor.text = cargoDetails.yanse
@@ -115,7 +113,7 @@ class AddKucunActivity : MyBaseActivity() {
         chooserAdapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
             override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
                 cargoNums[currindex].numbers = chooserNums[position].numbers
-                cargoNums[currindex].xinjiu = chooserNums[position].xinjiu
+                //cargoNums[currindex].xinjiu = chooserNums[position].xinjiu
                 //cargoNums[currindex].num = if (isCK) "-1" else "1"
                 cargoNums[currindex].orders_type = type
                 adapter.notifyDataSetChanged()
@@ -133,6 +131,17 @@ class AddKucunActivity : MyBaseActivity() {
             picasso.load(IMAGE_URL + fileUrl).into(holder.itemView.kcImage)
             holder.itemView.kcNumbers.setText(data[position].numbers)
             holder.itemView.kcXinJ.setText(data[position].xinjiu)
+            holder.itemView.kcXinJ.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {
+                    cargoNums[position].xinjiu = s.toString()
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
             holder.itemView.kcCheckNum.setOnClickListener {
                 //搜索库存编号
                 currindex = position
