@@ -44,7 +44,7 @@ class FaQuanActivity : MyBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_faquan)
-        faquan_edu.text = "请谨慎发券，年总额度1万元\n剩余额度：${AppUnion.edu}"
+        faquan_edu.text = "请谨慎发券，年总额度${AppUnion.yhqqx + AppUnion.edu}万元\n剩余额度：${AppUnion.edu}"
         price = intent.getIntExtra("price", 0)
         type = intent.getIntExtra("type", 1)
         initActionBar(this, "发送${price}元券", rightBtn = "发送", rightClick = {
@@ -78,9 +78,9 @@ class FaQuanActivity : MyBaseActivity() {
                 Pair("price", price.toString()), Pair("yxq", faquan_count.text.toString()), Pair("ids", checkIds))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
-                if(AppUnion.logier_id == UserID.WORKER){
+                if (AppUnion.logier_id == UserID.WORKER) {
                     getWorkerDetails()
-                }else{
+                } else {
                     getStoreInfo()
                 }
                 CustomDialog(message = "发送成功", positiveClicked = android.content.DialogInterface.OnClickListener { dialog, which ->
