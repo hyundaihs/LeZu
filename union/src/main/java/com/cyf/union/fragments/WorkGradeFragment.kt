@@ -19,7 +19,6 @@ import com.cyf.lezu.fragments.BaseFragment
 import com.cyf.lezu.requests.MySimpleRequest
 import com.cyf.lezu.utils.*
 import com.cyf.union.AppUnion
-import com.cyf.union.AppUnion.Companion.yhqqx
 import com.cyf.union.R
 import com.cyf.union.ShowImageDialog
 import com.cyf.union.activities.*
@@ -72,7 +71,9 @@ class WorkGradeFragment() : BaseFragment() {
             override fun onSuccess(context: Context, result: String) {
                 val workerDetailsRes = Gson().fromJson(result, WorkerDetailsRes::class.java)
                 workerDetails = workerDetailsRes.retRes
-                yhqqx = workerDetails.yhqqx
+                AppUnion.yhqqx = workerDetails.yhqqx
+                AppUnion.edu = workerDetails.syyhq.toInt()
+                AppUnion.yhqff = workerDetails.yhqff.toInt()
                 getWorkerGradeDetails()
                 initViews()
             }
@@ -117,7 +118,6 @@ class WorkGradeFragment() : BaseFragment() {
 
     private fun initViews() {
 //        work_grade_ewm_title.setText("我的二维码:${workerDetails.zt_id}")
-        AppUnion.edu = workerDetails.syyhq.toInt()
         work_grade_my_ticheng.setText("绩效总额:\n¥${workerDetails.yffjx}")
         val picasso = Picasso.with(activity)
         picasso.load(IMAGE_URL + workerDetails.ewm_file_url).into(work_grade_ewm_pic)

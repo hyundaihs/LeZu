@@ -33,6 +33,7 @@ class AppUnion : Application() {
         var instance: AppUnion by Delegates.notNull()
         var workerList = ArrayList<WorkerInfo>()
         var yhqqx: Int = 0
+        var yhqff: Int = 0
         var edu: Int = 0
     }
 
@@ -56,6 +57,7 @@ fun Context.ShowImageDialog(url: String) {
     Picasso.with(this).load(IMAGE_URL + url).into(imageView)
     dialog.show()
 }
+
 enum class UserID {
     WORKER, BOSS
 }

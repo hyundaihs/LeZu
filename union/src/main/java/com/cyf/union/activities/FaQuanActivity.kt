@@ -44,7 +44,7 @@ class FaQuanActivity : MyBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_faquan)
-        faquan_edu.text = "请谨慎发券，年总额度${AppUnion.yhqqx + AppUnion.edu}万元\n剩余额度：${AppUnion.edu}"
+        faquan_edu.text = "请谨慎发券，年总额度${AppUnion.yhqff + AppUnion.edu}元\n剩余额度：${AppUnion.edu}"
         price = intent.getIntExtra("price", 0)
         type = intent.getIntExtra("type", 1)
         initActionBar(this, "发送${price}元券", rightBtn = "发送", rightClick = {
@@ -217,6 +217,8 @@ class FaQuanActivity : MyBaseActivity() {
                 val storeInfoBoss = storeInfoBossRes.retRes
                 AppUnion.yhqqx = storeInfoBoss.yhqqx
                 AppUnion.edu = storeInfoBoss.syyhq.toInt()
+                AppUnion.yhqff = storeInfoBoss.yhqff.toInt()
+                faquan_edu.text = "请谨慎发券，年总额度${AppUnion.yhqff + AppUnion.edu}元\n剩余额度：${AppUnion.edu}"
             }
 
             override fun onError(context: Context, error: String) {
@@ -241,6 +243,8 @@ class FaQuanActivity : MyBaseActivity() {
                 val workerDetails = workerDetailsRes.retRes
                 AppUnion.yhqqx = workerDetails.yhqqx
                 AppUnion.edu = workerDetails.syyhq.toInt()
+                AppUnion.yhqff = workerDetails.yhqff.toInt()
+                faquan_edu.text = "请谨慎发券，年总额度${AppUnion.yhqff + AppUnion.edu}元\n剩余额度：${AppUnion.edu}"
             }
 
             override fun onError(context: Context, error: String) {

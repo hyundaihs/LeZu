@@ -111,7 +111,7 @@ syyhq => 剩余优惠券额度
  */
 data class WorkerDetails(val id: Int, val title: String, val zt_id: Int, val account: String, val ye_price: Double,
                          val ewm_file_url: String, val login_time: Long, val file_url: String, val yffjx: Double,
-                         val syyhq: Double, val yhqqx: Int)
+                         val syyhq: Double, val yhqqx: Int,val yhqff: Double)
 
 data class WorkerDetailsRes(val retRes: WorkerDetails) : RequestResult()
 

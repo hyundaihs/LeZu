@@ -76,6 +76,9 @@ class BossQueryGradeFragment() : BaseFragment() {
                 val storeInfoBossRes = Gson().fromJson(result, StoreInfoBossRes::class.java)
                 storeInfoBoss = storeInfoBossRes.retRes
                 yhqqx = storeInfoBoss.yhqqx
+                AppUnion.yhqff = storeInfoBoss.yhqff.toInt()
+                AppUnion.edu = storeInfoBoss.syyhq.toInt()
+                AppUnion.yhqff = storeInfoBoss.yhqff.toInt()
                 initViews()
             }
 
@@ -94,7 +97,6 @@ class BossQueryGradeFragment() : BaseFragment() {
     }
 
     private fun initViews() {
-        AppUnion.edu = storeInfoBoss.syyhq.toInt()
         boss_query_grade_yue.setText("提现余额:\n¥${storeInfoBoss.ye_price}")
         Picasso.with(activity).load(IMAGE_URL + storeInfoBoss.ewm_file_url).into(boss_query_grade_ewm_pic)
         boss_query_grade_ewm.setText("店铺二维码:${storeInfoBoss.id}")
