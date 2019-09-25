@@ -145,7 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@mipmap/ipbg"
-            android:text="已有账号,直接注册"
+            android:text="已有账号,直接登录"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
