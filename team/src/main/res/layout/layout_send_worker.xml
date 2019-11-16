@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/priceMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入佣金"
+        android:textColor="@android:color/black"
+        android:inputType="numberDecimal"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentMsg" />
+
+    <TextView
+        android:id="@+id/contentMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="请确认选中的工人，平台将把此订单发送给该工人，工人抢单后将随你一并完成任务"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleMsg" />
+
+    <TextView
+        android:id="@+id/titleMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="提示"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

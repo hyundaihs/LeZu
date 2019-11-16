@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_mission_kg.*
  * Created by ${蔡雨峰} on 2019/8/15/015.
  */
 class HistoryOrderActivity : MyBaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_order)
@@ -29,12 +30,12 @@ class HistoryOrderActivity : MyBaseActivity() {
         val titles = ArrayList<String>()
         val ordersFragment1 = OrdersFragment()
         val bundle1 = Bundle()
-        bundle1.putInt("pageType", OrderListType.KG_HISTORY_OUT)
+        bundle1.putInt("pageType", intent.getIntExtra("out",OrderListType.KG_HISTORY_OUT))
         ordersFragment1.arguments = bundle1
         fragments.add(ordersFragment1)
         val ordersFragment2 = OrdersFragment()
         val bundle2 = Bundle()
-        bundle2.putInt("pageType", OrderListType.KG_HISTORY_IN)
+        bundle2.putInt("pageType", intent.getIntExtra("in",OrderListType.KG_HISTORY_IN))
         ordersFragment2.arguments = bundle2
         fragments.add(ordersFragment2)
         titles.add("出库订单")

@@ -61,10 +61,14 @@ class OrderListType {
         const val KG_ORDER_IN = 7 //库管-订单-已入库
         const val XJ_ORDER_OUT = 8 //巡检-订单-出库
         const val XJ_ORDER_IN = 9 //巡检-订单-入库
-        const val GR_ORDER_OUT = 10 //巡检-订单-出库
-        const val GR_ORDER_IN = 11 //巡检-订单-入库
+        const val GR_ORDER_OUT = 10 //工人-订单-出库
+        const val GR_ORDER_IN = 11 //工人-订单-入库
         const val KG_HISTORY_OUT = 12//库管-历史订单-出库
         const val KG_HISTORY_IN = 13 //库管-历史订单-入库
+        const val XJ_HISTORY_OUT = 14//巡检-历史订单-出库
+        const val XJ_HISTORY_IN = 15 //巡检-历史订单-入库
+        const val GR_HISTORY_OUT = 16//工人-历史订单-出库
+        const val GR_HISTORY_IN = 17 //工人-历史订单-入库
     }
 }
 

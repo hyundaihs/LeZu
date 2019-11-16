@@ -105,8 +105,8 @@ class WebActivity : MyBaseActivity() {
 
     //Web视图
     private inner class webViewClient : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest?): Boolean {
-            view.loadUrl(url)
+        override fun shouldOverrideUrlLoading(view: WebView, request: String): Boolean {
+            view.loadUrl(request)
             return true
         }
     }

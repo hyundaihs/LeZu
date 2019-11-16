@@ -50,7 +50,10 @@ class MissionKGFragment : BaseFragment() {
             AppTeam.isLogged = false
             startActivity(Intent(context, MainActivity::class.java))
         }, leftBtn = "历史记录", leftClick = {
-            startActivity(Intent(it.context, HistoryOrderActivity::class.java))
+            val intent = Intent(it.context, HistoryOrderActivity::class.java)
+            intent.putExtra("out",OrderListType.KG_HISTORY_OUT)
+            intent.putExtra("in",OrderListType.KG_HISTORY_IN)
+            startActivity(intent)
         })
     }
 

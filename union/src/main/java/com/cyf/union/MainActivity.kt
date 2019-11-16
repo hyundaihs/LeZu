@@ -42,14 +42,14 @@ class MainActivity : MyBaseActivity() {
         introduce.setOnClickListener {
             val intent = Intent(this, WebActivity::class.java)
             intent.putExtra("type", 2)
-            intent.putExtra("html", "http://www.lovelezu.com/index.php?s=/Info/index.html")
+            intent.putExtra("html", "http://lovelezu.com/gwwap.php?s=/Info/index.html")
             intent.putExtra("pageName", "平台介绍")
             startActivity(intent)
         }
         newsInfo.setOnClickListener {
             val intent = Intent(this, WebActivity::class.java)
             intent.putExtra("type", 2)
-            intent.putExtra("html", "http://www.lovelezu.com/index.php?s=/News/index.html")
+            intent.putExtra("html", "http://lovelezu.com/gwwap.php?s=/News/index/id/2.html")
             intent.putExtra("pageName", "新闻资讯")
             startActivity(intent)
         }

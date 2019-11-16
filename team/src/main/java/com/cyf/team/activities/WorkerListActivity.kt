@@ -1,5 +1,6 @@
 package com.cyf.team.activities
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -7,6 +8,9 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.OrientationHelper
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import com.cyf.lezu.MyBaseActivity
 import com.cyf.lezu.adapters.LineDecoration
@@ -22,6 +26,7 @@ import com.cyf.team.entity.*
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_worker_list.*
+import kotlinx.android.synthetic.main.layout_send_worker.view.*
 import kotlinx.android.synthetic.main.layout_worker_item.view.*
 
 /**
@@ -59,9 +64,41 @@ class WorkerListActivity : MyBaseActivity() {
         workerList.adapter = adapter
         adapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
             override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
-                CustomDialog("提示", "确定要安排这个工人进行当前订单吗？", positiveClicked = DialogInterface.OnClickListener { dialog, which ->
-                    setWorker(workers[position].id)
-                }, negative = "取消")
+//                CustomDialog("提示", "确定要安排这个工人进行当前订单吗？", positiveClicked = DialogInterface.OnClickListener { dialog, which ->
+//                    setWorker(workers[position].id)
+//                }, negative = "取消")
+                val builder = AlertDialog.Builder(view.context)
+                val root = layoutInflater.inflate(R.layout.layout_send_worker, null, false)
+                root.priceMsg.addTextChangedListener(object :TextWatcher{
+                    override fun afterTextChanged(editable: Editable?) {
+                        val editStr = editable.toString().trim()
+
+                        val posDot = editStr.indexOf(".")
+                        //不允许输入3位小数,超过三位就删掉
+                        if (posDot < 0) {
+                            return
+                        }
+                        if (editStr.length - posDot - 1 > 2) {
+                            editable?.delete(posDot + 3, posDot + 4)
+                        }
+                    }
+
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    }
+
+                })
+                builder.setView(root)
+                builder.setPositiveButton("确定") { dialog, which ->
+                    if (!root.priceMsg.text.isEmpty()) {
+                        setWorker(workers[position].id, root.priceMsg.text.toString().toFloat())
+                    }
+                }
+                builder.setNegativeButton("取消", null)
+                builder.create()
+                builder.show()
             }
         }
     }
@@ -113,13 +150,14 @@ class WorkerListActivity : MyBaseActivity() {
         }, true).postRequest(this as Context, "grlists".getInterface(), map)
     }
 
-    private fun setWorker(id: Int) {
+    private fun setWorker(id: Int, price: Float) {
         val map = mapOf(
                 Pair("orders_type", orderType)
                 , Pair("orders_id", orderId.toString())
                 , Pair("gr_id", id.toString())
                 , Pair("type_id", typeId.toString())
                 , Pair("contents", typeId.toString())
+                , Pair("yj_price", price.toString())
         )
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {

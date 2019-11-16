@@ -59,12 +59,14 @@ class WebActivity : MyBaseActivity() {
     private fun initWebView(url: String) {
         val webSettings = rule_content.getSettings()
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK)
-        //设置WebView属性，能够执行Javascript脚本
         webSettings.setJavaScriptEnabled(true)
-        //设置可以访问文件
-        webSettings.setAllowFileAccess(true)
-        //设置支持缩放
-        webSettings.setBuiltInZoomControls(true)
+        webSettings.setAllowContentAccess(true)
+        webSettings.setAppCacheEnabled(false)
+        webSettings.setBuiltInZoomControls(false)
+        webSettings.setUseWideViewPort(true)
+        webSettings.setLoadWithOverviewMode(true)
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN)
+
         webSettings.setDomStorageEnabled(true) //重点是这个设置
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
@@ -75,7 +77,7 @@ class WebActivity : MyBaseActivity() {
         } else if (type == 2) {
             rule_content.loadUrl(url)
         } else {
-            rule_content.loadData(url, "text/html; charset=UTF-8", null)
+            rule_content.loadData(url, "text/html charset=UTF-8", null)
         }
         //设置Web视图
         rule_content.webViewClient = webViewClient()
@@ -104,8 +106,8 @@ class WebActivity : MyBaseActivity() {
 
     //Web视图
     private inner class webViewClient : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest?): Boolean {
-            view.loadUrl(url)
+        override fun shouldOverrideUrlLoading(view: WebView, request: String): Boolean {
+            view.loadUrl(request)
             return true
         }
     }

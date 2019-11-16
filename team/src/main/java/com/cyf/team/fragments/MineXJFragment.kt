@@ -17,6 +17,7 @@ import com.cyf.team.AppTeam
 import com.cyf.team.MainActivity
 import com.cyf.team.OrderListType
 import com.cyf.team.R
+import com.cyf.team.activities.HistoryOrderActivity
 import kotlinx.android.synthetic.main.fragment_mission_kg.*
 
 /**
@@ -46,6 +47,11 @@ class MineXJFragment  : BaseFragment() {
             m_Password = ""
             AppTeam.isLogged = false
             startActivity(Intent(context, MainActivity::class.java))
+        }, leftBtn = "历史记录", leftClick = {
+            val intent = Intent(it.context, HistoryOrderActivity::class.java)
+            intent.putExtra("out",OrderListType.XJ_HISTORY_OUT)
+            intent.putExtra("in",OrderListType.XJ_HISTORY_IN)
+            startActivity(intent)
         })
 
     }

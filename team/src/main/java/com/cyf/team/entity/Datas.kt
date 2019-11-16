@@ -64,12 +64,17 @@ data class CargoDetails(val id: Int, val kucun_id: Int, val num: Int, val goods_
 [xj_admin_id] => 巡检员ID
 [xj_admin_phone] => 巡检员电话
 [xj_admin_title] => 巡检员名称
+[ps_yj_price] => 配送佣金
+[ps_yj_status] => 配送佣金状态（0：未发放，1：已发放）
+[hs_yj_price] => 回收佣金
+[hs_yj_status] => 回收佣金状态（0：未发放，1：已发放）
 [lists] => Array
 [type] => 订单类型（gm：购买，zl：租赁）*/
 data class CargoOrder(val id: Int, val numbers: String, val title: String, val status: Int, val phone: String, val pca: String, val address: String, val wl_title: String
                       , val wl_numbers: String, val contents: String, val create_time: Long, val ck_status: Int, val ck_time: Long, val rk_status: Int
                       , val rk_time: Long, val ps_status: Int, val ps_contents: String, val ps_admin_id: Int, val ps_admin_phone: String, val ps_admin_title: String
                       , val ps_fp_time: Long, val hs_status: Int, val hs_admin_id: Int, val hs_admin_phone: String, val hs_admin_title: String, val hs_fp_time: Long
+                      , val ps_yj_price: Double, val ps_yj_status: Int, val hs_yj_price: Double, val hs_yj_status: Int
                       , val xj_admin_id: Int, val xj_admin_phone: String, val xj_admin_title: String
                       , val lists: ArrayList<CargoDetails>, val type: String, val update_time: Long)
 
